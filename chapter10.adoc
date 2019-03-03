@@ -1,0 +1,10 @@
+== What Now?
+I hope you have learned a lot with this guide.
+This really just showed the tip of the iceberg with things you can do with Django.
+There is a great open source community within Django, and many different third party packages that also help.
+
+My goal is to create a few versions of this guide that will start adding a little more with each release.
+There are plenty of resources available out there, so don't be afraid to use Google.
+In my next releases, I will be including an appendix of resources that will help you through your career.
+
+Thanks for reading.

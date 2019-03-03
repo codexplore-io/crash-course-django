@@ -1,0 +1,1098 @@
+== Python
+Python is a programming language that was invented for readability.
+It should read very close to English, especially relative to other progamming languages.
+Python also has a lot of things that are built in that make it ready to go.
+
+=== Console vs script
+First, we will be using two terms: *console* and *script* throughout this book.
+A console is an interactive way to create Python code.
+This allows you to code in real time and get
+
+A script, on the other hand, is a collection of statements that are executed in one swoop.
+It is typically saved in its own file (or files) as a .py (or Python file)
+
+First, let's install Python.
+Go to the following: https://www.anaconda.com/distribution/
+Download the Python 3.7 version.
+When you download the package, you should be able to follow the instructions to install.
+
+If you want to use a Javascript console, simply open Google Chrome.
+Then, right click and click "inspect".
+A window will open at the bottom of the screen and there will be a bar along the top of that window.
+Look for "console" and click it.
+If you want to use the console, this is the best way to use it while going through this chapter.
+This chapter will typically be more beneficial if you use the console, and the following chapters will focus on separate scripts and .js files.
+
+=== Variables and Built In Functions
+What is a variable?
+In simplest terms, a variable is a piece of information that is stored.
+This piece of information can be anything from a letter to a number.
+In Python, you do not need to specify the variable type or even specify that it is a variable when you create it.
+The general syntax is below.
+
+[literal]
+_name_ = value
+
+If you want to create a variable that holds your first name, you could do the following:
+
+[literal]
+my_first_name = 'Tanner'
+
+Now, whenever you refer to `my_first_name`, it will refer to the value `'Tanner'`.
+
+==== Boolean
+A boolean is a variable that can hold one of two values: `True` or `False`.
+These two values are keywords in Python, so it will automatically recognize the value as a boolean if you type it correctly.
+
+[literal]
+i_like_the_rams = True
+
+In this example, I set the variable `i_like_the_rams` to `True`.
+As we will learn later in this chapter, booleans are helpful to conditionally perform tasks.
+For example, if I am an online retailer, and I save whether or not somebody is a Rams fan, I can then push notifications for Rams products if `i_like_the_rams = True` for a given customer.
+There are obviously better ways to do this, but this is just to help explain.
+
+==== String
+A string is a collection of letters.
+This can be one letter or multiple.
+In order to create a string, you use quotations.
+This can be double (`""`) or single (`''`).
+A few examples are below.
+
+[literal]
+first_name = 'John'
+last_name = 'Smith'
+favorite_movie = "A Few Good Men"
+
+Generally speaking, when you define a variable in Python, you lowercase all letters and use `_`, as a matter of convention.
+
+If you want to combine strings, you can use the `+` sign to concatenate.
+So, I could do the following:
+
+[literal]
+my_full_name = first_name + " " + last_name
+
+This will result in `John Smith`.
+We put a space between them using normal quotes and a space to show that you don't need to necessarily save the content in another variable when concatenating them.
+
+==== Int
+An int is a variable that holds the variable of an integer.
+An integer is just a whole number.
+An example would be 3 or 18273.
+
+In order to create an integer, you can do the following
+
+[literal]
+three = 3
+four = 4
+one_hundred_four = 104
+
+We can do mathematical operations with integers by using the operations you already know: addition (`+`), subtraction (`-`), multiplication ('*'), and division ('/').
+There is also the modulus operator (`%`), which will return the remainder of the division of two numbers.
+
+[literal]
+.Modulus Operator
+3 % 2
+>> 1
+23 % 5
+>> 3
+
+Does this make sense?
+If you divided 3 by 2, the remainder would be 1.
+If you divided 18 by 5, the answer would be 4, remainder 3.
+
+The last main operator is the exponential operator, (`**`).
+
+----
+3**2
+>> 9
+8**3
+>> 512
+----
+
+==== Float
+A float is simply a number that has values in the decimal places.
+So, 3.4 is a float, but not an int.
+3 is an int, but not necessarily a float.
+On the other hand, 3.0 would necessarily be a float because there is a value after the decimal places, even if that value is 0.
+
+All of the operators work on floats, other than the modulus operator.
+By definition, the modulus operator only works on integers.
+
+=== Built In Data Types
+After just pure variables, Python has a variety of Data Types that hold more than one piece of data.
+Their properties and behavior vary, but they are very useful for performing calculations and dealing with data.
+We will try to go through all of the data sets, but we don't want to just repeat the common items that are already in the Python docs.
+For further reference, go to the following link look at more details of the built in Data Types:
+https://docs.python.org/3/tutorial/datastructures.html
+
+==== Sets
+A set in python is a group of items that are created with `Set([_set items_])` or `{_set items_}`.
+A set can have a collection of any data type, including a set of sets.
+Let's look at the following code.
+
+[literal]
+my_set = {1,2,3}
+my_other_set = Set([1,2,3])
+
+The two sets above are identical.
+We can check this in a console.
+
+[literal]
+my_set == my_other_set
+>> True
+
+If you want to check if a certain element is in a set, you can use `in` or `not in`
+
+[literal]
+1 in my_set
+>> True
+8 in my_set
+>> False
+
+These are only some of the common operations.
+Feel free to look up the Python docs to look at all of the possible operations for comparing Sets.
+
+==== Tuples
+A `tuple` is a collection of ordered data that can be referenced by the index.
+The index is the location in the Tuple that your piece of information is located, and the index starts at 0.
+This is very important: THE INDEX STARTS AT ZERO.
+
+Let's define a `tuple`
+
+[literal]
+my_tuple_1 = (1, 2, 3, 4)
+my_tuple_2 = 1, 2, 3, 4
+
+Both of these methods will create a tuple with the values provided.
+If we wanted to access the element with value 1, we would use the following notation:
+
+[literal]
+my_tuple_1[0]
+
+The braces signify that we are going to look for the value with index = 0 in `my_tuple_1`.
+We will review indexing more in depth after we review lists in the next section.
+
+==== Lists
+Lists are one of the most widely used built in data types in Python.
+A `list` is a mutable, ordered list of items that can be of any data type.
+For example, you can have the following valid lists:
+
+----
+my_list_1 = [1, 2, 3, 4]
+my_list_2 = ["Alan", "Bob", "Chris", "Dan"]
+my_list_3 = [1, "Bob", 3, 4]
+----
+
+Remember that indexing starts at zero.
+So, if we wanted to access "Alan" in `my_list_2`, we would use `my_list_2[0]`.
+
+We can also change elements in a `list` like the following:
+
+----
+my_list_1[0] = 100
+print(my_list)
+>> [100, 2, 3, 4]
+----
+
+Let's now look at some common methods used with lists.
+First, is the `append()` method.
+
+If you want to add an element to the end of the list, simply type the following:
+
+----
+my_list_1.append(10)
+print(my_list)
+>> [100, 2, 3, 4, 10]
+----
+
+Let's say we want to put an element somewhere else in the list.
+We want to put a value of 12 between 4 and 10.
+
+----
+my_list_1.insert(4, 12)
+----
+
+This will add the value of 12 in index 4, and shift the rest of the elements.
+
+What about removing elements?
+We can use `pop()`.
+Without an argument, it will remove the last element of the list.
+If there is an argument, it will remove the element at the index you specify.
+
+This will remove the last element of the list:
+
+----
+my_list_1.pop()
+----
+
+This will remove the second element of the list:
+
+----
+my_list_1.pop(1)
+----
+
+Now that we have gone through some data structures, let's look how to use indexing to really understand how to manipulate the data.
+
+==== Indexing
+Indexing is a very important way to access information in a data structure.
+Specifically, we will be looking at lists, because indexing requires the data structure to be ordered.
+
+So, if we want to get the first element (not the element with an index = 1, but the first element in the list), we simply type `my_list[0]`.
+This will return the first element.
+However, what if we want to return the last element.
+Well, index = 0 gives you the first element and index = 1 gives you the second element, we can get the last element by getting the length of the list and subtracting one.
+So,
+
+----
+my_list = [1,2,3,4]
+my_list[len(my_list) - 1]
+>> 4
+----
+
+This seems a little bulky, so there must be a better way.
+Well, we can use negative indices.
+So, we could also do the following:
+
+----
+my_list[-1]
+>> 4
+----
+
+This works because it will "wrap around" to the end of the list.
+If we you wanted to get the second to last item, you would use `my_list[-2]`.
+
+What if we wanted to slice a list and get certain sections of one?
+We can use the `:` when indexing.
+So, let's say we have a new list:
+
+----
+my_list = [0,1,2,3,4,5,6,7,8,9]
+----
+
+Let's look at a few ways that we can use indexing to split this list up
+
+----
+my_list[0:5]
+>> [0, 1, 2, 3, 4]
+my_list[:5]
+>> [0, 1, 2, 3, 4]
+my_list[1:]
+>> [1, 2, 3, 4, 5, 6, 7, 8, 9]
+my_list[:]
+>> [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+my_list[:-1]
+>> [0, 1, 2, 3, 4, 5, 6, 7, 8]
+----
+
+Note that if you are slicing using two numbers, that is like `my_list[0:5]`, it includes the value in the first referenced element and excludes the value in the last element you send it.
+So, it will not return the value of `my_list[5]` in that instance.
+
+==== Dicts
+A `dict` is a very powerful data type in Python that you will come across often and is frequently used in Django.
+It is a type of hash map that is built in Python.
+However, we can review dicts now.
+
+A `dict` saves multiple pieces of data using key, value pairs.
+It is similar to a JSON object in that way.
+Let's look how to create one:
+
+----
+my_dict = {
+    'key_1': 'value_1',
+    'key_2': 'value_2'
+}
+----
+
+There are two entries in `my_dict`.
+The first one has a key of 'key_1' with a value of 'value_1'.
+The second has a key of 'key_2' with a value of 'value_2'.
+
+In order to access the values, we use the syntax:
+
+----
+my_dict['key_1']
+>> 'value_1'
+----
+We can change the values in a dict by doing the following:
+
+----
+my_dict['key_1'] = 'new_value'
+my_dict['key_1']
+>> 'new_value'
+----
+
+The entries for the keys must be strings.
+The values in the dict can be of nearly any data type.
+So, you could do the following, for example:
+
+----
+my_other_dict = {
+    'key_1': [0,1,2],
+    'key_2': 88
+}
+----
+
+Remember: when you access either 'key_1' or 'key_2', it will return whatever the value is.
+So, if we wanted to get the second element in the list for 'key_1', we do the following:
+
+----
+my_other_dict['key_1'][1]
+>> 1
+----
+
+It is that easy.
+We will learn more about using dicts when we look at loops, so we can learn how to cycle through the information in a dict.
+
+==== Summary of Common Data Types
+.Summary of Common Data Types
+|===
+|Name |Syntax |Mutable |Ordered
+
+|Set
+|`{}` or `Set([])`
+|Yes
+|No
+
+|Tuple
+|`()` or just list out the data with commas
+|No
+|Yes
+
+|List
+|`[]` or `list([])`
+|Yes
+|Yes
+
+|Dict
+|`{'key': value}`, or `dict()`
+|Yes
+|N/A
+
+|===
+
+=== Converting Between Variables
+Python has built in functions (we will cover custom functions later) that help work between ints, floats and strings.
+If you want to convert a variable to an int, you would use the `int()` method.
+For floats, you use the `float()` method and for strings, you use the `str()` method.
+When would this come up in programming? Let's look at an example.
+
+==== Calculating from Console
+Python has a function called `input()` that saves the input from a user in the console.
+By default, Python saves this value as a string.
+However, we want to perform calculations.
+So, we can convert these values into a float in order to perform calculations.
+We want our code to do the following in the console:
+
+[literal]
+Please input your first number: 3
+Please input your second number: 4
+The sum of these is 7
+
+First, we need to save the value as a variable.
+
+[literal]
+num_1 = input("Please input your first number: ")
+num_2 = input("Please input your second number: ")
+
+This is the syntax that is used in the source code.
+It will put the text in the input function in the console, and will take the input right after.
+So, per the console code, `num_1 = 3` and `num_2 = 4`.
+
+We continue our code.
+
+[literal]
+num_1 = float(num_1)
+num_2 = float(num_2)
+sum = num_1 + num_ 2
+
+Now, we have 7 saved as a value in `sum`.
+We need to output the answer, however.
+This is using the `print()` function.
+The `print()` function takes in as many arguments as you want, and outputs them in the console.
+We could do the following
+
+[literal]
+print("The sum of these is ", sum)
+
+This function will automatically output the number.
+However, what if we wanted to just combine the output in one string?
+We could do the following:
+
+[literal]
+print("The sum of these is " + str(sum))
+
+Both of these methods would output the same to the console.
+To wrap it up, this is what our entire script would look like.
+
+[literal]
+num_1 = input("Please input your first number: ")
+num_2 = input("Please input your second number: ")
+num_1 = float(num_1)
+num_2 = float(num_2)
+sum = num_1 + num_ 2
+print("The sum of these is " + str(sum))
+
+=== Logic and Loops
+Much of programming revolves around checking for different conditions and performing tasks conditionally and repetitively.
+This section will focus on implementing logic and loops in Python.
+
+==== Logic
+First, let's take a look at `if` statements.
+An `if` statement will create a set of conditions that will create different code blocks to execute, depending on which condition is true.
+
+[literal]
+if 5 + 5 == 1:
+    print("5 + 5 = 1")
+elif 5 + 5 < 9:
+    print("5 + 5 < 9")
+else:
+    print("5 + 5 = 10")
+
+Let's first look at the syntax.
+In Python, `if` statements are defined by using the keyword `if` like many other languages.
+After the `if` keyword, you put the first condition followed by a colon.
+If this condition is `True`, the code that is indented underneath the first condition is executed.
+Note that there are no braces - Python uses white space to its advantage.
+All of the logic within an if statement must have consistent white space in each line.
+
+If the first condition is `False`, it will go to the next condition.
+In this case, it is the `elif` keyword.
+This means "else if".
+It will then look at this condition to see if it is satisfied.
+As with the first condition, if it is true, it will execute the code in the block, which means it will print to the console ("5 + 5 < 9").
+We know this is `False`, so it will go to the next condition.
+
+The next condition begins with `else` with no logic.
+This is because this is the "last line of defense".
+It will go to see if each condition is `True` or `False`.
+If all of the preceding conditions are `False`, it will execute whatever is in the `else` block.
+
+It is important to remember that all `if` statements must have at least one `if` keyword.
+The `elif` and `else` conditions are not necessary.
+If there is an `if` statement with no `else`, then nothing will execute.
+For example,
+
+[literal]
+if 5 + 5 == 9:
+    print("This condition is True")
+
+In this case, if this were all that was in your code, nothing would print to the console.
+It is valid code, it just would not do anything visible.
+
+If statements will execute the code beneath it if and only if the condition is `True`
+
+You may have noticed that `if` statements have comparisons in their conditions.
+The following table shows the different ways to compare variables.
+
+.Summary of Comparison Operators
+|===
+|Syntax |What it Does |Example
+
+|`==`
+|Checks to see if two objects are equal
+|`3 == 3` will be `True`. `3 == 6` will be 'False'.
+
+|`>`
+|Checks to see if one element is greater than another
+|`10 > 4` will be `True`. `4 > 10` will be `False`.
+
+|`>=`
+|Checks to see if one element is greater than or equal to another.
+|'15 >= 15' will be `True`. `15 > 15` will be `False`.
+
+|`<`
+|Checks to see if one element is less than another.
+|`15 < 4` will be `False`. `4 < 15` will be `True`.
+
+|`<=`
+|Checks to see if one element is less than or equal to another.
+|'3 <= 3' will be `True`. `3 < 3` will be `False`.
+
+|`!=`
+|Checks if two objects are not equal
+|`5 != 5` will be `False`. `5 != 6` will be `True`
+
+|`is`
+|Checks to see if two things are the same Object.
+|`5 is 5` is `True`. `5 is 5.0` is `False`.
+
+|`is not`
+|Checks to see if two things are not the same Object.
+|`5 is not 5` is `False`. `5 is not 5.0` is `True`.
+
+|`in`
+|Checks to see if a certain element is `in` a group of other elements (a set or a list, for example)
+|`"Hello" in ["Hello", "World"]` is `True`
+
+|`not in`
+|Checks to see if a certain element is not `in` a group of other elements (a set or a list, for example)
+|`"Hello" not in ["Hello", "World"]` is `False`
+
+|`and`
+|Checks to see if two conditions are `True` or `False`. Will return `True` if and only if both are `True`.
+|`3 == 3 and 4 == 4` will return `True`
+
+|`or`
+|Checks to see if two conditions are `True` or `False`. Will return `True` if one of the conditions are `True`.
+|`3 == 3 or 4 == 5` will return `True`
+
+|===
+
+Use this table as a reference when you are trying to compare different values in `if` statements or other parts of your code.
+
+==== Loops
+A loop is a feature in programming languages that allows you to perform repetitive tasks.
+A loop is a feature in programming languages that allows you to perform repetitive tasks.
+A loop is a feature in programming languages that allows you to perform repetitive tasks.
+A loop is a feature in programming languages that allows you to perform repetitive tasks.
+
+In case you didn't know, a loop allows you to perform the same task over and over.
+In Python, there are two types of loops: `while` loops and `for` loops.
+
+===== While Loops
+A while loop is called a 'while loop' because it will perform iterations of while a certain condition is true.
+It will first look at the condition, then determine if the condition is `True`.
+If it is, it will go through the list of directions you are asking it to perform.
+The directions will need to be indented by a consistent number of spaces below the `while` statement.
+The general syntax is below:
+
+----
+while some_condition_is_true:
+    # do something
+----
+
+This is great and all, but what is it relevant for?
+Let's jump into an example.
+What if we want to print all numbers between (and including) 1 and 100?
+We could just use the `print()` function for each number and have 100 lines of code.
+But, that is inefficient.
+So, we could do the following:
+
+----
+output = 1
+while output <= 100:
+    print(output)
+    output = output + 1
+----
+
+So, instead of typing 100 lines of code, we can type 4.
+
+===== For Loops
+A for loop is another loop structure.
+However, it typically is used to iterate through something.
+The general syntax is as follows:
+
+----
+for some_iteration:
+    # do something
+----
+
+So, let's say we define a list:
+
+----
+my_list = [0, 1, 2, 3, 4, 5, 6]
+----
+
+We want to print out something like "The number is: x", and continue that for each value.
+We could use a for loop:
+
+----
+for value in my_list:
+    print("The number is: ", value)
+----
+
+This will loop through the values in `my_list`.
+You could name `value` anything - that is up to you.
+It just needs to remain consistent with how you reference it in the actual loop logic.
+
+Let's say we want to be able to access the index.
+We can only access the value in this instance.
+Well, we can use the `enumerate()` function.
+This will give us a counter to go along with the value.
+
+----
+for index, value in enumerate(my_list):
+    print("The number in index {} is {}".format(index, value))
+----
+
+We send in two variables, and it will loop through the `list` while giving us access to both the index and the value.
+
+We also will want to iterate through a dict sometimes.
+There is a handy method for dicts called `items()`.
+This will do something similar to `enumerate()`, but will give the key and the value instead of the index and the value.
+For example:
+
+----
+my_dict = {
+    'key_1': 1,
+    'key_2': 2,
+    'key_3': 3,
+    'key_4': 4
+}
+for key, value in my_dict.items():
+    print("Key: {}, Value: {}".format(key, value))
+----
+
+This will print out the following:
+
+----
+Key: key_1, Value: 1
+Key: key_2, Value: 2
+Key: key_3, Value: 3
+Key: key_4, Value: 4
+----
+
+We would then have access to both the key and value in this case.
+
+=== Functions
+We have looked at some of the built in functions in Python, such as `print()`.
+However, in programming languages, you can create your own custom functions.
+Functions are great for snippets of code that you will need to reuse, or just to clean up your code.
+
+How do we create our own function in Python?
+We start using the `def` keyword.
+This keyword lets Python know that we are creating a function.
+Then, we follow it with the name of the function and any arguments that we are going to send.
+
+[literal]
+def my_function(num_1, num_2):
+    #your code goes here
+
+The preceding code shows a generic definition for any function.
+"my_function" is the name of the function, and it receives two arguments, `num_1` and `num_2`.
+Then, within the block of the function, you indent and put your code.
+All lines of code must be indented the same in Python, because it uses whitespace instead of brackets, like in Javascript.
+
+In Python, functions can return a value.
+That means, that we can put our inputs in the function, and we want some sort of output.
+We do this using the `return` keyword.
+
+[literal]
+def my_function(num_1, num_2):
+    #your code goes here
+    return some_value
+
+In this case, the function will execute all the code, and then return a value.
+
+In order to call a function, you simply type the name of the function in your console or script. So, let's look at an example.
+
+[literal]
+def addition(num_1, num_2):
+    sum = num_1 + num_2
+    print(sum)
+
+In our console:
+
+[literal]
+addition(3, 4)
+>> 7
+
+This function will simply print the sum to the console.
+However, what if we wanted to save the value of the sum?
+We would have to return a value.
+So, we would make our function look like the following:
+
+[literal]
+def addition(num_1, num_2):
+    sum = num_1 + num_2
+    return sum
+
+In our console:
+my_sum = addition(num_1, num_2):
+print(my_sum)
+>> 7
+
+Now, we can refer to our sum whenever we want.
+
+Our function must have two arguments, otherwise it will not work, and there will be an error.
+
+[literal]
+my_sum = addition(1)
+
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: addition() missing 1 required positional argument: 'num_2'
+
+Python throws back a `TypeError` saying that it is missing an argument.
+So, we can change our addition function to the following:
+
+[literal]
+def addition(num_1 = 0, num_2 = 0):
+    sum = num_1 + num_2
+    return sum
+
+If you put default values in the arguments when you are defining a function, it will use these values if no other value is provided.
+I chose `0` arbitrarily, and any value can be chosen in reality.
+
+Now:
+[literal]
+my_sum = addition(1)
+print(a)
+>> 1
+
+This is because it will take the first number we input, 1, as the first argument, `num_1`, and if there is no second argument provided, the value of `num_2` would be 0.
+
+==== Factorial Example
+Let's put everything we have learned so far to use.
+We are going to make a simple function, called `factorial`, that takes in a number.
+Factorial will return the factorial of the number that is sent to the function.
+
+NOTE: A factorial, denoted with an exclamation point, returns the product of all of the numbers less than and including the number, but not zero.
+For example, 3! = 3 * 2 * 1 = 6.
+0!, however is 1 by definition.
+
+Before reading along, I suggest trying it yourself.
+First, we know that we will have to define a function, called `factorial`.
+It will return the final product.
+We can start like this:
+
+[literal]
+def factorial(number):
+    product = number
+    number = number - 1
+    _#logic will go here._
+    return product
+
+So far so good.
+The reason we defined product as number will make sense soon.
+Next, we will need to decrease the number by one until it reaches 1.
+This sounds like the perfect time for a loop.
+I suggest a while loop.
+So, let's start
+
+[literal]
+while number > 0:
+    product = product * number
+    number = number - 1
+
+Since we defined our product as number, then subtracted one, the first line will multiply our product by our number - 1.
+After this, we will decrease number by 1. We will keep doing this `while number > 0`.
+That means this will stop at 1.
+We will then return our product.
+
+A couple things, however.
+We need to make sure we are getting an integer as an input.
+A quick, easy way to do this would be to transform the number into an integer, rather that doing a bunch of validations.
+In the first line of your function, you can put:
+
+[literal]
+number = int(number)
+
+One last thing.
+We need to make sure that if we are given 0, it returns 1, by definition of a factorial.
+We can add a quick `if` statement after we transform the number into an int.
+
+[literal]
+if number == 0:
+    return 1
+
+Now, let's put it all together.
+
+[literal]
+def factorial(number):
+    number = int(number)
+    if number == 0:
+        return 1
+    product = number
+    number = number - 1
+    while number > 0:
+        product = product * number
+        number = number - 1
+    return product
+
+That's it! You just made a python function.
+
+=== Recursion
+It is easy to implement the factorial function using a loop.
+However, we can also use a feature called recursion.
+Recursion is when we call a function within itself.
+It sounds confusing, but it is pretty straightforward.
+
+Let's look at a non-recursive example, where we want to make a function that prints out every number from our number, down to zero.
+
+[literal]
+def count(number):
+    while number >= 0:
+        print(number)
+        number = number - 1
+
+This function will simply print every number from number down to zero.
+However, when dealing with repetition in functions, you can consider to use recursion.
+We would change the `count` function to the following:
+
+[literal]
+def count(number):
+    print(number)
+    if number != 0:
+        return count(number - 1)
+
+Do you see how this works?
+Python allows us to call the function within the function itself.
+It will print the number, and if it is not 0, it will perform the `count` function for the next number.
+
+It doesn't look like there is a great difference between the two methods in this example.
+Let's look at the previous example of a factorial using recursion.
+
+==== Recursive Factorial
+We will start off with the same function definition, because it will still get a number as an input.
+Then, we will do the same as we did before, where we changed the number to an int, in case the use input a float.
+The case of number=0 is the same as the previous example.
+
+So far, we have the same;
+
+[literal]
+def factorial(number):
+    number = int(number)
+    if number == 0:
+        return 1
+
+Now we have to figure out how to recursively use the same function.
+We know that 4! = 4 * 3 * 2 * 1.
+This is the same as saying 4! = 4 * 3! = 4 * 3 * 2!.
+Now we are getting somewhere.
+We can see that each factorial function depends on a factorial of the next number.
+If we want to write it in more computer science form, it would be: `factorial(4) = 4 * factorial(3)`, and so on.
+
+So, if `number != 0`, we should multiply the number by the factorial of the number below.
+Our new function should look like this:
+
+[literal]
+def factorial(number):
+    number = int(number)
+    if number == 0:
+        return 1
+    else:
+        return number * factorial(number-1)
+
+Recursion will likely take some practice to truly understand, and how to implement it.
+However, we can see that in this example, it shortens the factorial function code by nearly half.
+
+=== `args` and `kwargs`
+A great feature in Python and other programming languages is the keyword `*args` and `*kwargs`.
+These two allow you to pass any arbitrary amount of arguments to a function without having to explicitly define them in the function definition.
+
+As always, let's look at an example:
+
+----
+def addition(num_1, num_2, num_3):
+    return num_1 + num_2 + num_3
+----
+
+In this example, we want to create a function that takes in a max of three numbers and returns the sum.
+But what happens if we want to only send two numbers?
+Then, we have to make sure they are all defaulted to zero, in case there are less arguments passed to the function.
+What if we want to send in more than three numbers?
+We would need to change the arguments to have a `num_4`.
+
+Or, we can use `*args`.
+This allows us to send in as many arguments as we want.
+So, let's change the `addition` method to include this.
+
+----
+def addition(*args):
+    sum = 0
+    for i in args:
+        sum += i
+    return sum
+----
+
+`*args` is of type tuple, so you can loop through it.
+Now, you can send in any amount of numbers and this will return the sum.
+In the console:
+
+----
+print(addition(3,2,7,3,4))
+>> 19
+----
+
+The `*` tells Python that you are sending in the `*args` argument.
+
+Now, let's move onto `**kwargs`.
+`**kwargs` is similar to `*args`, but instead of sending a tuple, it sends a dict.
+Let's say we wanted to create a function that returns a formatted version of a letter.
+So, we have a template:
+
+----
+Dear [blank],
+
+My name is [blank]. I want to talk to you about [blank].
+
+[More content goes here].
+
+Sincerely,
+[blank]
+----
+
+In this case, we have a very simple template that will have a few different inputs.
+Inputs (arguments) are
+
+1. Addressee
+2. Author
+3. Subject
+4. Other content
+
+We could create the function by doing the following:
+
+----
+def letter(addressee = "", author = "", subject = "", other_content = ""):
+    output = "Dear {},\n My name is {}. I want to talk to you about {}.\n{}\n Sincerely, \n{}".format(addressee, author, subject, other_content, author)
+    return output
+----
+
+This is a cumbersome way to define a function especially if you are dealing with a lot of potential arguments.
+We could change our function definition to the following:
+
+----
+def letter(**kwargs):
+    output = "Dear {},\n My name is {}. I want to talk to you about {}.\n{}\n Sincerely, \n{}".format(kwargs['addressee'], kwargs['author'], kwargs['subject'], kwargs['other_content'], kwargs['author'])
+    return output
+----
+
+This makes it much easier to define the function and allows for a much more sophisticated way to write code.
+
+=== Guided Exercises
+We will go through a couple more exercises to understand how to use Python.
+
+==== Palindrome Checker
+A palindrome is a word that is the same forward as it is reversed.
+So, "dad" and "mom", for example are palindromes.
+Let's write a function to check for a palindrome.
+We aren't going to do this in the easiest way, because I want to go through a lot of the concepts we have already reviewed.
+
+First, let's brainstorm.
+We know that we will need to reverse a word at some point.
+Of the data types we know, `list` has a `reverse()` method.
+
+[literal]
+def palindrome(word):
+    reversed_word = list(word)
+    reversed_word.reverse()
+    reversed_word = "".join(reversed_word)
+    if reversed_word == word:
+        return True
+    else:
+        return False
+
+So, what did we do?
+First, we converted the string `word` into a list, such that each element is a letter of `word`.
+Then, we reversed the list.
+Lastly, we used the `join()` method.
+This takes a string, and joins all of the elements within the argument.
+Lastly, we checked if `reversed_word` is the same as `word`.
+If so, we return `True`, else we return `False`.
+
+Let's try to improve this.
+Since we are only returning `True` or `False`, we can just return the `if` condition.
+So, an improvement would be:
+
+[literal]
+def palindrome(word):
+    reversed_word = list(word)
+    reversed_word.reverse()
+    reversed_word = "".join(reversed_word)
+    return reversed_word == word
+
+Returning the condition like this is a very easy trick to decrease any unnecessary `if` statements
+
+TIP:There is an even better way of doing this. Look up more advanced ways of indexing, and you will be able to make this code even more efficient.
+
+==== Pyramid of Stars
+Let's try another example.
+I want to create a function called `pyramid`.
+This function will take an integer and will print out a pyramid with a total number of rows that are given as an argument.
+For example:
+
+[literal]
+pyramid(3):
+  *
+ ***
+*****
+
+This one is a little trickier.
+Let's think this one through as well.
+The first row will have one star, the second row will have three starts, the third will have 5 and so on.
+So, the number of stars per row will be odd, and increase by two.
+
+We also need to look at the number of spaces in each row so that it is nice and centered like the one above.
+The first row has two spaces on each side, the second row has one space on each side and the last row has no spaces on each side.
+It seems that the first row will have spaces on each side and will decrease each row.
+
+.Pyramid
+|===
+|Row |Output |Number of Spaces |Number of Stars
+
+|1
+|  *
+|2
+|1
+
+|2
+| ***
+|1
+|3
+
+|3
+|*****
+|0
+|5
+
+|===
+
+We have a table that shows the row by row calculations.
+When row = 1, the spaces = 2.
+When row = 2, the spaces = 1.
+When row = 3, the spaces = 0.
+
+So, it looks like we can define spaces as `spaces = total_rows - row`.
+Now, let's look at the number of stars.
+When row = 1, the stars = 1.
+When row = 2, the stars = 3.
+When row = 3, the stars = 5.
+
+This one is a little trickier.
+You may want to do a few more rows, but it looks like the way to calculate this is `stars = row * 2 - 1`.
+So, let's start coding this.
+
+----
+def pyramid(rows):
+    for i in range(rows):
+        spaces = rows - (i + 1)
+        stars = 2 * (i + 1) - 1
+----
+
+Let's walk through this for a second.
+We know that `i` in that code starts at 0.
+So, we need to increase the counter, `i`, by one in order to get the current row, if we are counting the rows starting from 1.
+We do the same with the number of stars.
+
+Next, we need to create the string that holds the output for the row.
+There is a little trick that we need to use - the `*` operator for strings.
+If you multiply a string by an integer, then you will get the original string repeated by the number you multiplied it by.
+For example, in the console:
+
+[literal]
+4 * "hello"
+>> "hellohellohellohello"
+
+So, try to apply this to the pyramid function.
+
+We will add the following line:
+
+----
+        output_row = spaces * " " + stars * "*"
+----
+
+Then, you print `output_row`.
+The final code should look like this:
+
+----
+def pyramid(rows):
+    for i in range(rows):
+        spaces = rows - (i + 1)
+        stars = 2 * (i + 1) - 1
+        output_row = spaces * " " + stars * "*"
+        print(output_row)
+----
+
+This is a very short algorithm, but it does help you think like a programmer a little bit more.

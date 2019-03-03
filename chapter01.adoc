@@ -1,0 +1,406 @@
+== HTML
+=== What is HTML?
+HTML, or Hypertext Markup Language is the language of the internet.
+When you open up a web page, you are essentially opening up a .html file.
+The browser "converts" the markup that you write in your text editor to a user friendly format.
+
+Think about a .doc or .docx file.
+When you are creating a .doc or .docx file, you are using a word processor to actually show the content of your file, such as Microsoft Word.
+If you were to open your file in Notepad, for example, it would look very different.
+But - it is the same file! It is just using a different program to display it.
+
+That is the same with a browser.
+A browser takes your .html file and creates the user friendly version of it.
+You could open the .html file in Notepad, or any text editor, and it will look much different.
+That is what learning how to programing in HTML is - working in a text editor to display something to a browser for an end user.
+
+NOTE: You may see the word "client" throughout this book or on other learning platforms.
+The client is also known as the user.
+Furthermore, when we say "client side," we mean the part of the website that the user, or client, sees.
+"Client side" and "Front End" are essentially interchangeable.
+
+This chapter will be very visual, so if you like pictures, this is the chapter for you.
+I will be showing you snippets of code, but I will also show you how it should look in your browser.
+
+=== How to Use HTML
+HTML is very, very easy to get started with, so let's jump right in. First, create a new text document.
+In Windows, this can be done by right clicking on your desktop, going to "New" then clicking "Text Document".
+You can name the document whatever you would like.
+
+Now that you have created it, you can double click to open it.
+Once you have it open, click "File" then "Save-As".
+In the "File name" input, type "Webpage.html".
+Then, in the "Save as type" input, click the drop down and select "All Files"
+Finally, click "Save."
+
+[#img-11]
+[.text-center]
+.Creating a new text document
+image::1_1.png[Creating a new text document]
+
+[#img-12]
+[.text-center]
+.Save as .html
+image::1_2.png[Save a document as .html]
+
+Congratulations! you have just created your first .html document!
+Type the following code in your html file and save it:
+
+[literal]
+<h1>Hello World!<h1>
+
+Next copy and past the path that your file is saved in and paste it in the URL in your browser.
+You should see the following in your browser:
+
+[#img-13]
+[.text-center]
+.Hello World in Browser
+image::1_3.png[Hello World in Browser, 500, auto]
+
+You are now a web developer!
+Right now, you are essentially hosting your web page, called "Webpage.html" on your own computer.
+Websites are similar - they just save it on another location.
+Then, when you go to a website, the browser will show whatever .html file is at that location.
+In the case of the above example, the file is located at C:/Users/tanner/desktop/webpage.html.
+
+Now, let's dive into HTML a little more.
+HTML documents are broken up into different elements.
+One example of an element is an `<h1>` element (called a *tag*).
+The `<h1>` tag is one of the most basic HTML tags, and it is formatted as a large heading in a web page (Heading 1).
+
+==== Self Closing vs Non-Self Closing Tags
+As you saw, there are three parts of the `<h1>` tag.
+
+1. The opening part: `<h1>`. This part opens the tag and lets you know that the following content will be a Heading 1.
+2. The content: `Hello World`. This part is the actual meat of the element.
+3. The closing tag: `</h1>`. This closes the tag, so the content is wrapped between these two snippets. Everything outside these snippets will be formatted in their own way.
+
+Generally speaking, tags will have an opening and closing element.
+For example, if you wanted a Heading 2 element, you would type the following:
+
+[literal]
+<h2>Hello World!<h2>
+
+I encourage you to type that into your .html file, resave and refresh your browser to see what happens.
+
+Not all tags will require the ending tag.
+There are some tags that are self closing, such as the `<input />` tag.
+In these cases, there is no content to be wrapped, and all code will be put within the tag.
+We will see both throughout this chapter, so it is important to know that this is common, and it will make more sense as we go along.
+
+=== Common Tags
+We briefly introduced tags in the last chapter, so we will go more in depth of ones that you will likely use in your programming career.
+Let's first start off with how to properly create an .html document.
+The entire .html file should always be wrapped in a `<html>` tag.
+Within the `<html>` tag, there are two other tags, the `<head>` and `<body>` tags.
+Put the following code in your "Webpage.html" file:
+
+[literal]
+<html>
+    <head>
+        <!-- Content in the head goes here. On a side note, this notation is for comments. -->
+    </head>
+    <body>
+        <!-- Most content will go here -->
+    </body>
+</html>
+
+The `<html>` tag is basically used to tell the browser that this is indeed an html document.
+We see two more elements, the `<head>` tag and the `<body>` tag.
+The `<head>` tag is where most of the high level html content will go.
+A great analogy I have heard before is to think of the `<head>` tag as your head.
+That is where all of your higher level thinking goes.
+
+The `<body>` tag is where the rest of the content goes.
+This is where the content will go that the user/client will see.
+For beginning HTML-ers, we will mainly be focused on the `<body>` tag.
+At this moment, your webpage is empty. There is no actual content, just empty elements.
+
+
+The one exception for the time being is the `<title>` tag.
+Within the `<head>` tag, the `<title>` tag will change the actual name of the html document that appears in your browser.
+In Google Chrome, this will be what appears on the tab.
+Right now, it is just "Webpage.html".
+
+If you change your code in the `<head>` tag to the following:
+
+[literal]
+<head>
+    <title>My Webpage</title>
+</head>
+
+You will see that the name in your tab is now "My Webpage".
+
+There are a lot of tags in HTML.
+Remember the Ten Commandments of Coding: Try not to get intimidated when looking at new code.
+This will be showing you a lot of them, but do not worry if you cannot memorize them right away.
+That will come with time while you practice.
+
+==== Heading and Paragraph Tags
+We have already looked at `<h1>` tags.
+This element will be the largest of the Headings in your project.
+HTML actually has 6 Heading elements, which are `<h1>` through `<h6>`.
+A common way to see this is to type the following within the `<body>` in your html document.
+See https://www.w3schools.com/html/tryit.asp?filename=tryhtml_headings[W3 Schools] to interactively learn this.
+
+[literal]
+<h1>This is a Heading 1 Element.</h1>
+<h2>This is a Heading 2 Element.</h2>
+<h3>This is a Heading 3 Element.</h3>
+<h4>This is a Heading 4 Element.</h4>
+<h5>This is a Heading 5 Element.</h5>
+<h6>This is a Heading 6 Element.</h6>
+<p>This is a Paragraph Element.</p>
+
+Your webpage should now look like the following:
+[#img-14]
+[.text-center]
+.Headings
+image::1_4.png[Headings, 500, auto]
+
+Cool, right?
+This is a simple way to change the size of your text in a web page.
+Notice I put in a `<p>` tag in as well.
+This tag is very common and is used to type normal text.
+We will learn in the following chapters how exactly to format a better website, but this is great for now.
+
+==== Styling Tags
+From now on, we will be using `<p>` to write our normal text.
+HTML has support for simple styling of your text including bold and italic.
+As you have seen before, we can nest elements inside of each other.
+The `<head>` and `<body>` elements are inside the `<html>` element, and we put more content within the `<body>` element.
+We can go further by putting more tags within a paragraph element.
+
+[literal]
+<p>Sometimes I like to <strong>bold</strong> text and other times I like to <em>italicize</em> text.</p>
+
+If you put this into your "Webpage.html", save it and refresh your browser, it will look like this:
+[#img-15]
+[.text-center]
+.Styling
+image::1_5.png[Styling, 500, auto]
+
+As you can see, the `<strong>` tag will bold any text within it and the `<em>` tag will italicize any text within it.
+
+=== Links and Images
+
+==== Links
+Links are going to be another very common element in your webpage.
+A *link* is simply a way to navigate to another webpage, whether it is part of your website or an external webpage.
+The way to do this is using the `<a>` tag.
+Before we can jump in, however, we need to learn another concept - tag attributes.
+
+An *attribute* is code that is put within the tag itself.
+Attributes is where we really start to see the power of HTML.
+Look at the following code, for example:
+
+[literal]
+<a href="https://www.google.com">Go to Google</a>
+
+Let's dissect this code.
+The content is "Go to Google".
+This will be what appears as text in your webpage.
+However, what does "href" mean?
+This is an attribute that tells the hyperlink where to go when the content is clicked.
+If you put the above code in your webpage, save and refresh your browser, you should see the following:
+
+[#img-16]
+[.text-center]
+.Hyperlink
+image::1_6.png[Hyperlink, 500, auto]
+
+You now have a link that will take you to Google!
+
+NOTE: You will need to add "http://" or "https://" before your link in the `href` attribute in order to go to an external website.
+Otherwise, it will assume it is located in the same location you are.
+Try to remove the "https://" before "www.google.com" and see what happens when you click your link.
+This will make more sense as we go through the book.
+
+I suggest practicing with a few different `<a>` tags to learn how it works with different websites.
+
+==== Images
+Images are the first self closing tag we will look at.
+It is denoted by the following:
+
+[literal]
+<img src="beach.jpeg" />
+
+It uses an attribute `src`, which tells the tag where the image is and the name of the image.
+It assumes that the image is in the same folder that the html file is.
+Once we start building larger webpages, we will look into this more.
+At this point, it just adds the "beach.jpeg" source to the end of the current directory.
+This makes sense with the note in the previous section about links.
+
+I have a file called "beach.jpeg" in the same folder as my "Webpage.html" file, so when I put that code in my file, I get the following:
+[#img-19]
+[.text-center]
+.Image
+image::1_9.png[Image, 500, auto]
+
+=== Lists
+What if you want to make a list of items?
+Well, HTML has something for that.
+There are two types of lists - ordered lists and unordered lists.
+
+==== Ordered Lists
+
+An ordered list is a list of items that is numbered.
+The syntax is as follows:
+
+[literal]
+<ol>
+    <li>My First Item</li>
+    <li>My Second Item</li>
+    <li>My Third Item</li>
+</ol>
+
+You wrap your list with the `<ol>` and create each list item by wrapping them in `<li>`.
+
+When you refresh your browser, you should see the following:
+[#img-17]
+[.text-center]
+.Ordered List
+image::1_7.png[Ordered List, 500, auto]
+
+You now have a list of items that are numbered.
+
+==== Unordered Lists
+
+Unordered Lists have similar syntax, but will create a bulleted list.
+
+[literal]
+<ul>
+    <li>My First Item</li>
+    <li>My Second Item</li>
+    <li>My Third Item</li>
+</ul>
+
+The only difference is the outside wrapping tag. It is `<ul>` instead of `<ol>`.
+Lists can have as many items as you would like.
+
+=== Tables
+What if you want a table?
+That is also very easy in HTML.
+A table is simply the intersection of rows and columns that create cells.
+In HTML, you can create a table with the following code:
+
+[literal]
+<table>
+    <tr>
+        <th>City</th>
+        <th>State/Region</th>
+        <th>Country</th>
+    </tr>
+    <tr>
+        <td>Los Angeles</td>
+        <td>California</td>
+        <td>United States</td>
+    </tr>
+    <tr>
+        <td>Prague</td>
+        <td>Prague</td>
+        <td>Czech Republic</td>
+    </tr>
+    <tr>
+        <td>Rome</td>
+        <td>Lazio</td>
+        <td>Italy</td>
+    </tr>
+<table>
+
+Let's break that down a little bit.
+The entire table is created using `<table>`.
+Then, within that, there are rows of the table, denoted by `<tr>`.
+The number of columns is given by how many data points are in each row, `<td>`.
+In this case, there are three columns.
+The heading of each column are denoted by `<th>`.
+This is the name of the column, and by default, HTML makes this stick out.
+Your webpage should look like this now.
+
+[#img-18]
+[.text-center]
+.Table
+image::1_8.png[Table, 500, auto]
+
+Now that we have tables, we can move onto forms, one of the most important features you will need to know for web development.
+
+=== Forms
+You will use forms a lot while you are developing websites.
+Forms are everywhere on the internet, from the place you type in your Google search to when you log into your e-mail account.
+Forms are created using the `<form>` tag and all of the inputs are `<input />` tags.
+The `<input />` tag is another self closing tag, and has an attribute of `type`.
+By defining the type, you will output different types of inputs.
+That does not make sense without an example, so let's look at the following text:
+
+[literal]
+<form>
+    <p>Username</p>
+    <input type="text" placeholder="Username"/>
+    <p>E-mail</p>
+    <input type="email" placeholder="Email"/>
+    <p>Password</p>
+    <input type="password" placeholder="Password"/>
+    <p>Date</p>
+    <input type="date" />
+    <br />
+    <input type="reset" />
+    <input type="submit" value="Submit Input"/>
+</form>
+
+Before we go forward, I want to introduce a new tag, `<br />`.
+This tag will create a new line in your webpage.
+
+Now, let's look at the types of inputs.
+
+1. `text`: This is a simple input that takes plain text.
+2. `email`: This is similar to the text input. However, it is a new type that will validate whether or not you have an email address in the input. When you click "submit", it will check if it is in the format of an email address.
+3. `password`: Password type will create a hidden input so people cannot see your password when you are typing it in.
+4. `date`: A choice of dates.
+5. `reset`: It will empty the current form.
+6. `submit`: It will submit the current field. This has another attribute called value, which will show what text to put in the button.
+
+The `placeholder` attribute says what text will be in the input temporarily until the User begins input.
+At this point, your webpage should look like the following:
+
+[#img-110]
+[.text-center]
+.Form
+image::1_10.png[Form, 500, auto]
+
+We will look at a few more input types - radio and check boxes.
+
+----
+<form>
+    <input type="radio" value="roption1" name="radio-options" /> Option 1 <br />
+    <input type="radio" value="roption2" name="radio-options" /> Option 2 <br />
+    <input type="radio" value="roption3" name="radio-options" /> Option 3
+</form>
+
+<form>
+    <input type="checkbox" value="coption1" name="check-options" /> Option 1<br />
+    <input type="checkbox" value="coption2" name="check-options" /> Option 2<br />
+    <input type="checkbox" value="coption3" name="check-options" /> Option 3<br />
+</form>
+----
+
+Radio buttons have radio inputs that will only allow one choice for each group, by default.
+Checkbox buttons will allow more than one option for each group, by default.
+
+The value attribute will tell the database what value the user is returning.
+The name attribute tells the database what form is being used.
+Note that we appended the Options at the end of the input.
+This is just for a user experience, so that the content for "Option 1", "Option 2" and "Option 3" have a corresponding User Interface with the `value` attribute.
+When we start dealing with back end development, this will start making more sense, as the values will correspond to the data in the database.
+
+Your webpage should look like the following:
+
+[#img-111]
+[.text-center]
+.Radio and Check Boxes
+image::1_11.png[Radio and Check Boxes, 500, auto]
+
+=== End of Chapter
+We have covered a lot in this chapter.
+Do not feel like you need to memorize everything at once.
+Many things we learned will be used more than others, so it will just come with practice.
+There are a few very important tags that we still need to cover, but it would not make as much as sense without CSS, which we will cover in the next chapter.

@@ -1,0 +1,257 @@
+== Django Framework Part Three
+We have covered how you can use Django to interact with the front end of your website.
+You can use views to pass information between .html files and your Django back end and other scripts.
+
+However, how do we style our templates?
+We have many different .html files, so how can we use the same CSS classes across all of them?
+What if we want to link to let's say, Bootstrap.
+Do we need to include the `<link>` in every .html file?
+That seems excessive.
+Luckily, Django makes it easy to organize your templates without having to repeat yourself.
+
+=== Template Inheritance
+Django has a very handy syntax and method to efficiently create dynamic templates.
+You will generally want one template to keep all of your project level stylesheets and scripts.
+Things like Bootstrap and JQuery would likely be included in this.
+We will create a project level .html file that will be inherited from in other templates.
+
+So, let's create that file, called "base.html" in your templates folder.
+It will be in the root directory of the templates folder.
+Just set up the .html file as if it was a normal .html file.
+Now, we will create the method of being able to inherit this template.
+Within the `<body>` tag, we will need to use Django template language.
+First, you will use the keyword `block` within the Django template tags.
+This is where your children templates will be located.
+Then, you use the keyword `endblock` to end the block.
+
+It should look like this:
+
+[#img-141]
+[.text-center]
+.Template Extending
+image::14_1.png[Template Extending]
+
+This is all we need to be able to extend this template so that we can inherit all of the scripts and styles from this template.
+The phrase `base_content` can be changed to whatever you want, as long as it is consistent with the name in `endblock`.
+In fact, you don't need to even put a name in `endblock`.
+If you don't, it will just end the block corresponding to the closest `block` tag.
+I find it helpful to repeat the name in each `endblock`, as it makes it easier to keep track of the content when you are nesting different templates.
+
+This can all be very confusing, so let's start looking at how to inherit the "base.html" content in our other templates.
+Let's change our other templates so that it inherits from "base.html".
+First, we will need to "extend" our "base.html" template.
+Then, we will need to specify in the new file where the `base_content` begins and ends.
+Let's start with our "posts/list.html".
+
+We can change our current html to the following:
+
+[#img-142]
+[.text-center]
+.Template Inheritance
+image::14_2.png[Template Inheritance]
+
+The first line `{% extends 'posts/base.html' %}` tells the template where we will be inheriting from.
+Then, we type the lines `{% content base_content %}` and `{% endblock base_content %}`.
+The way Django works is by "injecting" the content within the content tags in the child page into the `base.html` page.
+
+[#img-143]
+[.text-center]
+.Post List View
+image::14_3.png[Post List View]
+
+We can tell that this works by looking at the tab.
+It says "Blog Project", which means the `<title>` tag from the 'base.html' is included with the `post_list_view` template.
+So, now that we have this, we can do the same thing with our other templates, that is 'posts/create.html', 'posts/detail.html', 'posts/delete.html' and 'posts/update.html'.
+
+Next, we can add some style sheets and Javascript scripts.
+Let's add Bootstrap to the 'base.html' file.
+
+[#img-144]
+[.text-center]
+.Adding Bootstrap
+image::14_4.png[Adding Bootstrap]
+
+We add the stylesheet in the `<head>` and we will put the scripts after the content.
+If we refresh our `post_list_view`, it will look like this:
+
+[#img-145]
+[.text-center]
+.Adding Bootstrap
+image::14_5.png[Adding Bootstrap]
+
+Now, it is updated with Bootstrap's styles and font family.
+If it does not have a different style, then something has gone wrong.
+
+=== Restyling the Project using Bootstrap
+Now that we have Bootstrap integrated, let's go into our templates and make them look better, starting with the 'posts/list.html'.
+I will be briefly explaining how to style the page, but most of the items are built on what we learned from the Bootstrap chapter.
+First, let's wrap our entire `base_content` within a Bootstrap container.
+In your 'base.html', it will look like this:
+
+----
+<div class = "container">
+    {% block base_content %}
+    {% endblock base_content %}
+</div>
+----
+
+This will give us some room on each side so the content is not hugging the sides of the viewport.
+Now, go to 'localhost:8000/posts/list'.
+It does not look good.
+Ideally, we would like to have a header on the page that says "All Posts", with a button to create a post.
+Then, we will have a list of all of the posts in the program.
+We can wrap the "All Posts" within an `<h1>` tag and use Bootstrap's `btn` class for the create a post button.
+Then, we will add some margin to the top of the page so it does not hug against the top of the browser.
+Using Bootstrap, our 'posts/list.html' file will look like the following:
+
+[#img-146]
+[.text-center]
+.Post List HTML
+image::14_6.png[Post List HTML]
+
+When we go the actual URL for the 'post_list_view', we see the following (I created more posts for filler):
+
+[#img-147]
+[.text-center]
+.Post List in Browser
+image::14_7.png[Post List in Browser]
+
+It looks better already.
+Now let's go to the create view.
+We will style the title of "Create New Post" in the same way we did for the "All Posts".
+Then, we will add the Bootstrap formatting for the forms.
+A form is created as usual.
+In Bootstrap, each pairing of the labels and form inputs will be wrapped by a `<div>` with a class of `form-group`.
+Then, the input has a class of `form-control`.
+I also added a "Cancel" button that will go back to the `post_list_view`.
+
+Your HTML should look like the following:
+
+[#img-148]
+[.text-center]
+.Post Create HTML
+image::14_8.png[Post Create HTML]
+
+When we go to 'localhost:8000/posts/create', we should see the following in the browser:
+
+[#img-149]
+[.text-center]
+.Post Create in Browser
+image::14_9.png[Post Create in Browser]
+
+We will do something similar with 'posts/update.html'.
+We will change our .html file to look like the following:
+
+[#img-1410]
+[.text-center]
+.Post Update in HTML
+image::14_10.png[Post Update in HTML]
+
+We also changed the link for our cancel to go back to the specific `post_detail_view` corresponding to the post that we are working on.
+This will look like the following:
+
+[#img-1411]
+[.text-center]
+.Post Update in Browser
+image::14_11.png[Post Update in Browser]
+
+Lastly, let's change the 'posts/detail.html'.
+We should probably center name of the article, and make sure it has a top margin.
+Then, we should make sure to change the buttons to look nice.
+I changed the html to have Bootstrap classes and used the `display-4` class to make the title look a little nicer.
+
+The HTML will look like this now:
+
+[#img-1412]
+[.text-center]
+.Post Detail in HTML
+image::14_12.png[Post Detail in HTML]
+
+And then in the browser:
+
+[#img-1413]
+[.text-center]
+.Post Detail in Browser
+image::14_13.png[Post Detail in Browser]
+
+Lastly, let's change our 'posts/delete.html' file.
+We will need to style our buttons, and make sure that the "Yes" button to confirm the deletion is red, so the user knows that it will delete the current post.
+Our HTML will now look like this:
+
+[#img-1414]
+[.text-center]
+.Post Delete in HTML
+image::14_14.png[Post Delete in HTML]
+
+And it looks like this in our browser:
+
+[#img-1415]
+[.text-center]
+.Post Delete in Browser
+image::14_15.png[Post Delete in Browser]
+
+Now, our project looks a lot better for the users of it.
+What if we have parts of our code that are repetitive?
+Well, we don't want to repeat our self, so we will use Django's `include` tool.
+
+=== Including Other Files
+Extending templates works great when you need to use certain elements on every page, and it is static across each file.
+However, what if you want to pick and choose when you use a certain snippet of code?
+Well, Django has a handy tool in its template language to do that.
+
+----
+{% include 'file_name.html' %}
+----
+
+If you write the preceding code in a Django template, it will "inject" the html from the file that you include.
+If we were to look at our code, a very large chunk of code is repeated - the form for creating and updating posts.
+So, let's create a code snippet that we can inject into our other templates.
+Let's put it in 'posts/snippets/form.html'.
+Then, copy the form from the 'posts/update.html' into the 'posts/snippets/form.html'.
+
+It should look like this:
+
+[#img-1416]
+[.text-center]
+.Form
+image::14_16.png[Form]
+
+We want to be able to reuse this form on both the create and update pages, so we will need to move the `{% 'posts:detail' id=post.id %}`.
+This is because it is relying on the context which has 'post.id' in it.
+The `post_create_view` does not have any context, so we would get an error on the redirect.
+There are a couple ways we can do this.
+Let's just remove the "Cancel" button to the outside of the 'form.html'.
+So, it will now look like this:
+
+[#img-1417]
+[.text-center]
+.Form without cancel
+image::14_17.png[Form]
+
+Then, we will move the `<a>` tag outside of the form and put them within the 'create.html' and 'update.html'.
+The "Cancel" button within the 'create.html' will redirect to the `post_list_view` and the "Cancel" button within the 'update.html' will redirect to the `post_detail_view`.
+So, we will include the file via {% include 'posts/snippets/form.html' %}.
+The 'posts/create.html' should look like this.
+
+[#img-1418]
+[.text-center]
+.posts/create.html
+image::14_18.png[posts/create.html]
+
+This is how we can reuse the form content.
+What about 'posts/update.html'?
+We will need to send a post to it.
+We do that using `with` in the `{% include %}` tag.
+It will look like this:
+
+[#img-1419]
+[.text-center]
+.posts/update.html
+image::14_19.png[posts/update.html]
+
+This is how we send variables to a form via the `{% include %}` tag.
+This feature is very picky when it comes to syntax, so you may have problems purely because of the syntax.
+You will now realize that the "Cancel" button is below the form.
+This is a quick fix by adding `class="d-inline"` to the `<form>` tag in 'posts/snippets/form.html'.
+
+Now that we have the basic views set up, and we aren't rewriting ode, we are able to add more styling to our app.

@@ -1,0 +1,706 @@
+== Advanced Django: Users
+Django is great for setting up databases and such, but Django has a bunch of added things that really take your project to the next level.
+These functions include setting up Users in your model, which Django has plenty of different tools to make this easy.
+We will also look at ways to make your Django projects more secure, as well as signals, class based views and Django forms.
+
+Django has a great framework for handling Users.
+It has a built in model, called User.
+There are a few ways to access this model, and we will look at the pros and cons of each.
+In our project, we want to add a user field to our blog posts so we know who the author is.
+
+=== The User Model
+Django has a built in model, the User model.
+It is just like the models we have seen in the past.
+When we want to create a new user, the implementation of this model will help us change the database.
+The User model is of `class models.User`.
+Every new instance of the User model will be another user.
+Each user has a few fields.
+These fields include the `username`, `first_name`, `last_name`, `email`, and `password`.
+There are several other fields that the User model has, but these are the main ones you will be using on a regular basis.
+If we wanted to create a User, we could go in the shell and do the following:
+
+----
+from django.contrib.auth import User
+new_user = User.objects.create_user(username='myusername', email="test@test.com", password="password!123")
+----
+
+This will create a new user in the database.
+As a layer of safety, Django does not save the raw password in the database.
+It saves an encrypted version of it.
+
+However, how should we organize the Users?
+I typically create a new app for that, called 'accounts'.
+So, let's do that by going into the command line and typing
+
+----
+python manage.py startapp accounts
+----
+
+Then, we need to go into `settings.py` and add the accounts app to the `INSTALLED_APPS`.
+Once we have this, we can start writing our views.
+Remember, we already have a built in User model, so we will not need to create one in `models.py`.
+
+NOTE: As you continue in your programming career, you will likely want to create your own User model.
+This can be done by starting off with the Django models and then changing them accordingly.
+
+Now, let's set up our views.
+Users are just like any other model - we will need to create a user, that is, a sign up feature.
+We will also need to be able to login and logout.
+Then, we want to be able to have a profile view so that you can view the individual user.
+
+We can initially set up our 'accounts/views.py' as the following:
+
+[#img-151]
+[.text-center]
+.accounts/views.py
+image::15_1.png[accounts/views.py]
+
+We have created our four main views.
+Also, note the imports in the template.
+This is using Django's built in authentication methods.
+Not only does Django have the built in User model, but it also has methods to help the entire User authentication process.
+The methods include logging in, authenticating and logging out.
+We also have the ability to create a user using the User model manager, `User.objects.create_user()`.
+
+However, where does the User model come from?
+Typically, we would have imported the User model from 'accounts/models.py'.
+But, Django has the User model already created, so we will look at the various ways to import the User model.
+
+==== Importing the User Class
+We could directly import the User model.
+This is just like importing a normal model, but it will be a User model.
+
+We do this with the following import:
+
+----
+from django.contrib.auth import User
+----
+
+This way we can reference the User model any time in the same way we would reference our Post model.
+However, this is not the ideal way to reference the User model.
+What if we end up extending the User model for our project?
+For example, if we make a class that inherits from User, we will want to reference that model.
+In Django, we can set which model we want to use for the User.
+So, we want to prepare for these instances.
+
+==== get_user_model
+The `get_user_model` function will do exactly what it says.
+It will return the User model that is activated in the project, and will default to `django.contrib.auth.User`.
+We implement it the following way:
+
+----
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+----
+
+We first import the method `get_user_model`.
+Then, we define a variable, called `User`.
+In theory, we could name this anything, such as `banana`.
+The variable will just save the value that is returned from `get_user_model`.
+
+==== AUTH_USER_MODEL
+We can also import Django's settings module and then reference the `AUTH_USER_MODEL` variable.
+Per Django's documentation, it is best to use this when referring to a custom user model in foreign key relationships.
+
+----
+from django.conf import settings
+
+User = settings.AUTH_USER_MODEL
+----
+
+A great thread on https://stackoverflow.com/questions/24629705/django-using-get-user-model-vs-settings-auth-user-model[Stack Overflow] discusses the differences between `get_user_model` and `AUTH_USER_MODEL` in more detail.
+
+=== User Views
+Now, let's go back to the 'accounts/views.py' and import the User model via `get_user_model()`.
+We will start off with the `user_create_view`.
+
+We will be creating users with three fields: `username`, `email` and `password`.
+So, let's write the `accounts/create.html` template.
+This will be written as the following:
+
+----
+{% extends 'base.html' %}
+{% block base_content %}
+    <div class = "container pt-5">
+        <div class = "display-4">
+            Sign Up
+        </div>
+        <br/>
+        <form method="POST">
+            {% csrf_token %}
+            <div class = "form-group">
+                <label for = "username">Username</label>
+                <input type="text" name="username" class = "form-control" required/>
+            </div>
+            <div class = "form-group">
+                <label for = "email">Email</label>
+                <input type="email" name="email" class = "form-control" required/>
+            </div>
+            <div class = "form-group">
+                <label for = "password">Password</label>
+                <input type="password" name="password" class = "form-control" required/>
+            </div>
+            <div class = "form-group">
+                <label for = "confirm-password">Confirm Password</label>
+                <input type="password" name="confirm-password" class = "form-control" required/>
+            </div>
+            <input type = "submit" value = "Sign Up" class = "btn btn-md btn-primary" />
+        </form>
+    </div>
+{% endblock base_content %}
+----
+
+Remember - the class `pt-` is `padding-top`.
+We are using Bootstrap classes, `form-group` and `form-control`.
+We also added another input - `confirm-password`.
+This is so we can confirm there are no typos in their password.
+Also, we added the `required` attribute for each field.
+This is a special HTML attribute that allows us to check if the input is empty before it hits the server.
+
+Next, let's add the path to 'accounts/urls.py'.
+If you haven't already, create the file 'urls.py' in your 'accounts' app.
+Then, let's include the 'accounts.urls' in our 'myproject.urls' by adding the following `path`:
+
+----
+path('accounts/', include('accounts.urls', namespace='accounts'))
+----
+
+After adding all of our code into our 'accounts/urls.py', it will look like this:
+
+----
+from django.urls import path
+
+from .views import user_create_view
+
+app_name = 'accounts'
+
+urlpatterns = [
+    path('create/', user_create_view, name="create"),
+]
+----
+
+So, whenever we use `{% url %}` in our templates to reference the 'accounts/create/', we will use `{% url 'accounts:create' %}`.
+When we visit it in our browser, it will resemble:
+
+[#img-152]
+[.text-center]
+.localhost:8000/accounts/create
+image::15_2.png[.localhost:8000/accounts/create]
+
+This is exactly what we want.
+You can try to submit the form with bad email formatting or with one of the fields empty.
+Thanks to the HTML input types and the `required` attribute, a lot of our validation is done on the front end.
+
+However, we cannot do all of our validation on the front end, so let's go back to our 'accounts/views.py'.
+We need to do the following checks:
+
+1. See if the passwords equal each other
+2. See if the username is taken
+3. See if the email is already being used
+
+So, within the `if request.method == "POST":` block, we can first check if the passwords equal.
+This way we can do the first check without having to check the database.
+In order to access the values, we can store the values in the inputs.
+
+----
+def user_create_view(request):
+    context = {}
+    if request.method == "POST":
+        password = request.POST['password']
+        confirm_password = request.POST['confirm-password']
+        if password == confirm_password:
+            #go to next check
+            return render(request, 'accounts/create.html', context)
+        else:
+            context['error'] = "Passwords don't match"
+            return render(request, 'accounts/create.html', context)
+    else:
+        return render(request, 'accounts/create.html', context)
+----
+
+Our `user_create_view` now has our first check.
+We also added a context variable to our output.
+We want to somehow send an error message if there is an issue, so this will be done in the context.
+We will define `context['error']` in each block so that it is specific, and we know what exactly went wrong.
+That means we will have to add the error message code in our template as well.
+You can put this anywhere, but I typically put it right above the form, below the "Sign Up" title.
+We will use Bootstrap's `text-danger` class.
+
+----
+{% if error %}
+    <div class = "text-danger">
+        {{error}}
+    </div>
+{% endif %}
+----
+
+We don't want to include the code if the `error` key is empty, so we first check if it exists.
+If it does, then we inject the HTML.
+
+We will next have to check if the username or email is already in the system.
+The logic is this: we will try to query the database and look for Users with the username/email that is given.
+If there is an error, that is: `User.DoesNotExist`, then we can create a new User.
+
+So, let's jump right in:
+
+----
+if password == confirm_password:
+    username = request.POST['username']
+    try:
+        User.objects.get(username=username)
+        context['error'] = "Username is taken"
+        return render(request, 'accounts/create.html', context)
+    except User.DoesNotExist:
+        email = request.POST['email']
+        try:
+            User.objects.get(email=email)
+            context['error'] = "Email already in system"
+            return render(request, 'accounts/create.html', context)
+        except User.DoesNotExist:
+            user = User.objects.create_user(username=username, email=email, password=password)
+            context['success'] = "Your Account is Created!"
+            return render(request, 'accounts/create.html', context)
+----
+After we check if the passwords match, we try to get the user by the username.
+If we throw an exception, that is actually good, because we don't have the username in the database.
+If we do not throw an exception, then our error message is `"Username is taken"`.
+Then, we check for a user with the email, using the same strategy.
+We could have done both the email and username check in the same `try` block, but it makes it easier this way to see which field is causing the error.
+
+If we create the user, then we have a new context item, `success`.
+This message will say `"Your Account is Created!"`.
+We will not have both a success message and an error message, so we can rewrite our template like this:
+
+----
+{% if error %}
+    <div class = "text-danger">
+        {{error}}
+    </div>
+{% elif success %}
+    <div class = "text-success">
+        {{success}}
+    </div>
+{% endif %}
+----
+
+This uses Bootstrap's `text-success` class, which is a green color.
+Now that we have this set up, try creating a user and make the passwords different.
+
+Then, create a legitimate `User` instance and remember the username and email you type.
+You should see the following if it was done correctly:
+
+[#img-153]
+[.text-center]
+.User Success
+image::15_3.png[User Success]
+
+Then, try to create another user with the same username/email.
+You should get error message if you cannot create it.
+We have officially created our `user_create_view`.
+
+Now, let's create our `user_login_view`.
+We first need to try to `authenticate` the User.
+This will actually verify that there is a user with the username and password provided.
+Then, we will login that user.
+
+Let's quickly create our template, 'accounts/login.html':
+
+----
+{% extends 'base.html' %}
+{% block base_content %}
+    <div class = "container pt-5">
+        <div class = "display-4">
+            Log In
+        </div>
+        {% if error %}
+            <div class = "text-danger">
+                {{error}}
+            </div>
+        {% elif success %}
+            <div class = "text-success">
+                {{success}}
+            </div>
+        {% endif %}
+        <br />
+        <form method="POST">
+            {% csrf_token %}
+            <div class = "form-group">
+                <label for = "username">Username</label>
+                <input type="text" name="username" class = "form-control" required/>
+            </div>
+            <div class = "form-group">
+                <label for = "password">Password</label>
+                <input type="password" name="password" class = "form-control" required/>
+            </div>
+            <input type = "submit" value = "Log In" class = "btn btn-md btn-primary" />
+        </form>
+    </div>
+{% endblock base_content %}
+----
+
+Now, let's work in our 'accounts/views.py'.
+So, we will import the `authenticate` and `login` functions from `django.contrib.auth`.
+Our import should look like this now:
+
+----
+from django.contrib.auth import authenticate, get_user_model, login
+----
+
+Authentication works by sending the username and login to the `authenticate` function.
+If there is no User with those credentials, it will return `None`.
+Otherwise, it will return the user.
+
+So, our code will look like this:
+
+----
+def user_login_view(request):
+    context = {}
+    if request.method=="POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            context['success'] = "You are logged in!"
+            return render(request, 'accounts/login.html', context)
+        else:
+            context['error'] = "Invalid Login"
+            return render(request, 'accounts/login.html', context)
+    else:
+        return render(request, 'accounts/login.html', context)
+----
+
+The `login` function takes in `request` as its first argument, then the user that has been authenticated as its second.
+If you try logging in with the user you just made, you should see a success message, otherwise, any other combination will result in an error.
+Lastly, we need to let the client call our function by adding the url to the 'accounts/urls.py'.
+Add the following `path` to your `urlpatterns`:
+
+----
+path('login/', user_login_view, name="login")
+----
+
+We have officially created `user_login_view`.
+Now, let's do the `user_logout_view`.
+
+We will need to place a logout button on each page, so it's time to put a navbar in.
+Go to your 'base.html' file and put in a navbar above the `{% block base_content %}` and outside of the `<div class = "container">`.
+We will use Bootstrap's collapsible navbar.
+Generally, you can just go to their website and copy the code you need and make any changes you need.
+
+----
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Django Blog</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'posts:list' %}">All Posts</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'posts:create' %}">Create Post</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Log Out</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'accounts:login' %}">Log In</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'accounts:create' %}">Sign Up</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+----
+
+We have added all of our User authentication buttons in our navbar.
+You may have noticed something - we will not need all of our authentication button at once.
+If nobody is logged in, then we will not need the "Log Out" button, and we don't want them to be able to "Create Post".
+
+If somebody is logged in, we don't need the "Login" button or the "Sign Up" button.
+Luckily, Django has a very simple way to check if a user is authenticated in the template.
+
+----
+{% if user.is_authenticated %}
+    <div>User is authenticated</div>
+{% else %}
+    <div>User is not authenticated</div>
+{% endif %}
+----
+
+Now we can just plug this into the navbar.
+Use the following:
+
+----
+<ul class="navbar-nav mr-auto">
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url 'posts:list' %}">All Posts</a>
+    </li>
+    {% if user.is_authenticated %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'posts:create' %}">Create Post</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Log Out</a>
+        </li>
+    {% else %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'accounts:login' %}">Log In</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'accounts:create' %}">Sign Up</a>
+        </li>
+    {% endif %}
+</ul>
+----
+
+Depending on if you are logged in or not, you should see the "Log Out" and "Create Post" buttons or the "Log In" and "Sign Up" buttons.
+
+Next, let's finish up the `user_logout_view`.
+We need to first check is the user is authenticated.
+If the user is authenticated, then we will log out.
+If the user is not authenticated, and they just went to that page somehow by mistake, we will redirect to the login page.
+We will need to import the `redirect` function:
+
+----
+from django.shortcuts import render, redirect
+----
+
+We already have render imported.
+Now, let's write the function.
+
+----
+def user_logout_view(request):
+    if request.user.is_authenticated:
+        logout(request)
+        return redirect('posts:list')
+    else:
+        return redirect('accounts:login')
+----
+
+So, if the user is authenticated, it will log the user out.
+Then, it will redirect to the `posts:list` url.
+`redirect` works by taking in a string in the same way `{% url %}` does.
+Now we add a path to the `accounts/urls.py`.
+Remember to import `user_logout_view`.
+
+----
+path('logout/', user_logout_view, name="logout")
+----
+
+Now we can add the `href` attribute to the button in the navbar.
+----
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'accounts:logout' %}">Log Out</a>
+</li>
+----
+Try testing it out.
+If you are not logged in, and you go to 'localhost:8000/accounts/logout', you should be redirected to the login screen.
+If you are logged in, and go to that URL click the 'Logout' button, you should be redirected to the `post:list` url, that is, `post_list_view`.
+
+We have officially added all of our authentication views.
+Now we will be adding the user model as a foreign key in a model.
+
+=== Adding the User as a Foreign Key
+In our 'posts/models.py', we want to add an author field so that we can see who wrote the blog post.
+We will use the `settings.AUTH_USER_MODEL` approach.
+
+This is when we introduce the idea of a Foreign Key.
+A Foreign Key relationship is a 'one-to-many' relationship.
+This means that there are two types of objects that can be related.
+But, there is a one way relationship.
+
+Let's look at the example of the `Post` model.
+Each instance of `Post` will have an author.
+An author is an instance of the `User` model.
+So, one author can have many different posts.
+However, every post can only have one author.
+This is a 'one-to-many' relationship in action.
+
+Let's add this in our model.
+We can change our 'posts/models.py' to look like this:
+
+----
+from django.db import models
+from django.conf import settings
+
+User = settings.AUTH_USER_MODEL
+
+class Post(models.Model):
+    title = models.CharField(max_length = 150)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add = True)
+    last_updated = models.DateTimeField(auto_now = True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+----
+
+So, we import the `settings` and define our `User`.
+Then, we create a new field, `author`, that is a `ForeignKey`, pointing to the User model.
+In addition, we have the `on_delete` argument.
+You may want to go into the shell and delete all Posts, because we are adding a non-nullable field to an already existing instance.
+Or, when you migrate, you can just add a default value, that will be prompted on the `migrate` command.
+So, let's perform our migrations:
+
+----
+python manage.py makemigrations
+----
+
+then,
+
+----
+python manage.py migrate
+----
+
+We will now have our `author` field added.
+How do we set the author, though when we are creating a model?
+We will now be updating our post views with our new `author` field.
+
+=== Integrating the author field with our Views
+First, let's change `post_create_view`.
+We first should limit this view for those that are logged in.
+We don't want anonymous users to be able to create a post.
+Django has a nifty way to do this.
+Go to your 'posts/views.py' and import the following:
+
+----
+from django.contrib.auth.decorators import login_required
+----
+
+This is a decorator that allows us to limit a view if someone is logged in.
+All you do once you import it, is add `@login_required` right on top of the view.
+So, change your `post_create_view` to look like this:
+
+----
+@login_required
+def post_create_view(request):
+----
+
+Now, you will not be able to access that view unless you are logged in.
+And, through Django magic, if you are not logged in, it will redirect you to your login page.
+Give it a try.
+This is because it will redirect to 'accounts/login' by default.
+You can change this if you want to, but that is outside the context of this class.
+
+Now that we are only allows those that are logged in to create a post, we can simply get the current user, and use that for the `author` field.
+The way we can do this is by accessing the User in the `request` object.
+We have already used this in the past, to check `request.method` and the `request.POST`.
+Now, we will will the `request.user`.
+This is the current user's `User` instance.
+So, we can go back into our `post_create_view` and add the current user.
+
+This would look like this:
+
+----
+if title and content:
+    author = request.user
+    post = Post.objects.create(title=title, content=content, author=author)
+    return redirect('posts:detail', id=post.id)
+----
+
+Remember, this is within our `post_create_view` after we check if we have our `title` and `content`.
+If you are logged in, you will be able to test this out.
+Let's first go the the 'posts/detail.html' template and add the author.
+Where we put the "Created" and "Updated" fields.
+
+----
+<p>Created: {{post.created_at}} | Updated: {{post.last_updated}} | Written by: {{post.author.username}}</p>
+----
+
+Next, go to 'localhost:8000/posts/create' and create a new post.
+When it is redirected, it should go to the 'posts:detail' view and say the username.
+My username for the user is 'username', so it will look like this:
+
+[#img-154]
+[.text-center]
+.Post Detail with Author
+image::15_4.png[Post Detail with Author]
+
+Now we need to think about how to change the rest of the views now that we have users.
+Any views that change the database will need the `@login_required` tag.
+
+----
+@login_required
+def post_update_view(request, id):
+
+@login_required
+def post_delete_view(request, id):
+----
+
+These two views will require a valid login.
+However, we also want to make sure that the only person that can change the post is the author.
+So, we can make a new template in our 'posts' folder, called 'posts/unauthorized.html'.
+It can say anything, but I put the following:
+
+----
+{% extends 'base.html' %}
+{% block base_content %}
+<div class = "row">
+    <h1>UNAUTHORIZED</h1>
+</div>
+{% endblock base_content %}
+----
+
+So now in our `post_update_view` and `post_delete_view`, we will first check if the currently logged in user, `request.user` is the same as the `author`.
+
+----
+@login_required
+def post_update_view(request, id):
+    post = Post.objects.filter(id=id).first()
+    context = { 'post': post }
+    if request.user == post.author:
+        if request.method == "POST":
+            updated_title = request.POST['post-title']
+            updated_content = request.POST['post-content']
+            if updated_title and updated_content:
+                updated_post = Post.objects.filter(id=id).update(title = updated_title, content = updated_content)
+                return redirect('posts:detail', id=post.id)
+            else:
+                context['error'] = "Both Title and Content are necessary!"
+                return render(request, 'posts/update.html', context = context)
+        else:
+            return render(request, 'posts/update.html', context = context)
+    else:
+----
+
+Now, if we were to create another user, and try to click the 'Edit' button on a certain `Post` instance, we will see the 'posts/unauthorized.html' template.
+There are a few different ways to do this.
+We could also redirect to the login view, or we could make another view entirely, at let's say, '/posts/unauthorized'.
+This is just a simple way.
+We can do the same for the `post_update_view`.
+
+----
+@login_required
+def post_delete_view(request, id):
+    post = Post.objects.filter(id=id).first()
+    context = { 'post': post }
+    if request.user == post.author:
+        if request.method == "POST":
+            post = Post.objects.filter(id=id).delete()
+            return redirect('posts:list')
+        else:
+            return render(request, 'posts/delete.html', context = context)
+    else:
+        return render(request, 'posts/unauthorized.html')
+----
+
+Notice that the `@login_required` tag is now irrelevant for the `post_update_view` and `post_delete_view`.
+This is because we are doing a check for the current user anyways, so we won't be able to see the view if we are not logged in as the current user.
+So, let's delete it for these two views.
+
+Lastly, let's see how this affects our templates.
+In our 'posts/detail.html' template, we only want to show the "Edit" and "Delete" button if the current user is the author.
+In our 'posts/detail.html', we should change our code with the following `if` statement:
+
+----
+{% if user == post.author %}
+    <a href="{% url 'posts:update' id=post.id %}" class="btn btn-md btn-success">Edit</a>
+    <a href="{% url 'posts:delete' id=post.id %}" class="btn btn-md btn-warning">Delete</a>
+{% endif %}
+----
+
+We have changed all of our views and models to include users.
+As you have seen, Django does a lot to help with this.

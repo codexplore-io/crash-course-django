@@ -1,0 +1,316 @@
+== Object Oriented Python
+Python is an object oriented language.
+That means that you will typically write your code relative to objects.
+An object (also called a Class) in Python has attributes (also called properties) and methods (functions).
+We will review objects from a fundamental level, and then look at three concepts of object oriented programming - encapsulation, inheritance and polymorphism.
+
+=== Introduction to Objects
+In order to create an object in Python, you will use the `class` keyword.
+
+Let's create an object called JaredGoff, which will describe the quarterback of the Los Angeles Rams.
+
+[literal]
+class JaredGoff:
+    first_name = "Jared"
+    last_name = "Goff"
+    position = "Quarterback"
+    team = "Los Angeles Rams"
+    jersey_number = 16
+
+Naming conventions for Python objects is to have no spaces between the words and to capitalize the first letter of each word, as shown in `JaredGoff`.
+We just created the object.
+But, this is just the object.
+Now, we need to create an _instance_ of the object.
+We do this by:
+
+[literal]
+person = JaredGoff()
+
+If we want to access the different attributes, we can do so by the following:
+
+[literal]
+person.first_name
+>> "Jared"
+person.last_name
+>> "Goff"
+person.jersey_number
+>> 16
+
+Objects can also have methods.
+In order to create a method in our object, we will just define a function within our object.
+
+----
+class JaredGoff:
+    first_name = "Jared"
+    last_name = "Goff"
+    position = "Quarterback"
+    team = "Los Angeles Rams"
+    jersey_number = 16
+
+    def describe(self):
+        return "{} {}, #{}, is a {} of the {}".format(self.first_name, self.last_name, self.jersey_number, self.position, self.team)
+----
+All custom methods in an object will need the `self` keyword as a first argument.
+This helps the method access other properties and attributes within the object.
+When we call the function, we will implicitly be sending the `self` argument as the first argument.
+If we use the above code, we can access the `describe()` method.
+
+[literal]
+print(person.describe())
+>> Jared Goff, #16, is a Quarterback of the Los Angeles Rams.
+
+This is great and all, but this object only refers to one person, so having multiple instances of the `JaredGoff` class does not really do anything.
+Next, we will learn how to create an object that is more customizable.
+
+==== Using `__init__`
+Python has a built in method for objects, called `__init__()`.
+This method is called whenever a new instance is created, and allows us to create a more dynamic object.
+Let's make an object called `Player` to show as an example.
+
+----
+class Player:
+    def __init__(self, first_name = "", last_name = "", position = "", team = "", jersey_number = 0):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.position = position
+        self.team = team
+        self.jersey_number = jersey_number
+
+    def describe(self):
+        return "{} {}, #{}, is a {} of the {}".format(self.first_name, self.last_name, self.jersey_number, self.position, self.team)
+----
+
+Now, we can create different instances of `Player` objects.
+We would do this in the following way:
+
+[literal]
+jared_goff = Player(first_name="Jared", last_name="Goff", position="Quarterback", team="Los Angeles Rams", jersey_number=16)
+
+Now, we have an instance of the `Player` object, `jared_goff`.
+We still have access to the properties of `Player`.
+
+[literal]
+jared_goff.first_name
+>> "Jared"
+jared_goff.last_name
+>> "Goff"
+jared_goff.jersey_number
+>> 16
+
+Because we have a class with an `__init__` class, we can make another instance that has similar properties and methods.
+
+[literal]
+todd_gurley = Player(first_name="Todd", last_name="Gurley", position="Running Back", team="Los Angeles Rams", jersey_number=30)
+print(todd_gurley.describe())
+>> Todd Gurley, #30, is a Running Back of the Los Angeles Rams
+
+=== Encapsulation
+We have learned what an object is.
+Let's dig into terminology a little bit more.
+The object definition is the part of code that creates the object's properties and methods, which is the code following the `class` keyword.
+
+An object instance is a specific implementation of your class.
+So, in the previous section, `jared_goff` would be an instance of the `Player` class.
+
+Encapsulation refers to the ability to manage the data of a class.
+Although it exists in Python, it is a much smaller concept than other languages, such as C++ or Java.
+
+
+
+=== Inheritance
+Inheritance is a part of object oriented programming that really shows just how powerful objects are.
+Inheritance allows you to create a new object that inherits properties and methods from another object.
+So, if there are a few different objects that have similar methods, you can create one object that holds the similar methods/properties and then inherit from that object.
+
+As always, let's jump right into an example.
+All Python objects implicitly inherit from Python's `Object` class.
+So, the following are equivalent:
+
+[literal]
+class MyObject:
+    # methods and properties go here
+
+[literal]
+class MyObject(object):
+    # methods and properties go here
+
+The parentheses after the class name contain the name of the object that you will be inheriting from.
+So, let's look at a more complicated example.
+
+----
+class Cat:
+    def __init__(self, name="", age=0, weight=0)
+        self.name = name
+        self.age = age
+        self.weight = weight
+
+    def meow(self):
+        print("Meow")
+
+class Dog:
+    def __init__(self, name="", age=0, weight=0)
+        self.name = name
+        self.age = age
+        self.weight = weight
+
+    def bark(self):
+        print("Bark")
+----
+
+We notice that the `__init__` method has the same code in both the Cat and Dog class.
+They both have the `name` property so we can assume they are pets.
+Let's make a `Pet` object with the same `__init__` class.
+
+----
+class Pet:
+    def __init__(self, name="", age=0, weight=0):
+        self.name = name
+        self.age = age
+        self.weight = weight
+----
+
+Now we can redefine the `Cat` and `Dog` class.
+
+----
+class Cat(Pet):
+    def meow(self):
+        print("Meow")
+
+class Dog(Pet):
+    def bark(self):
+        print("Bark")
+----
+
+Both `Cat` and `Dog` have the `__init__()` method just as defined as in the `Pet` object.
+Then, we can add whatever methods we want to them when they are inherited from `Pet`.
+
+What if we wanted to add another property to our class Dog?
+Could we still use inheritance, or would we need to rewrite our entire object?
+This is where `super()` comes in.
+
+==== `super()`
+When you want to use the methods and/or properties from another class that you are inheriting from, but still need to change some of the methods, you can.
+This is done using `super()`.
+What this essentially does is call the predefined method within the method itself.
+
+----
+class MyObject(MyOtherObject):
+    def method(self, arg1, arg2):
+        super().method(arg1)
+----
+
+This will send the arguments from the `MyObject` `__init__` method to the `__init__` method from `MyOtherObject`.
+You can only send in the arguments that apply to the object arg.
+Then, we can add other properties into the `__init__` method.
+
+Let's look at the example by adding the `breed` property to the `Dog` class.
+
+----
+class Dog(Pet):
+    def __init__(self, name="", age=0, weight=0, breed=""):
+        super().__init__(name, age, weight)
+        self.breed = breed
+
+    def bark(self):
+        print("Bark")
+----
+
+In the console:
+
+----
+air_bud = Dog("Air Bud", 2, 65, "Golden Retriever")
+print(air_bud.name, air_bud.breed)
+>> Air Bud Golden Retriever
+----
+
+It will create an instance of class `Dog` using the `__init__` method from `Pet` class.
+Then, we can extend the usage by adding more logic and lines of code.
+This will be heavily utilized when we get into Django, so make sure you understand this concept.
+It will make more sense as you see examples in Django.
+
+==== Multiple Inheritance
+The great thing about inheritance is that you can inherit from multiple objects.
+This means that an object can inherit the objects and methods from multiple objects.
+
+In Python, syntax for this is easy.
+All you would need to do is to add another object within the parentheses when creating an object.
+
+----
+class MyObject(MyOtherObject1, MyOtherObject2):
+    #code goes here
+----
+
+In this example, `MyObject` inherits from both `MyOtherObject1` and `MyOtherObject2`.
+
+=== Polymorphism
+Polymorphism is the idea that the same method can be performed on different objects.
+We want to be able to use the same method for different classes, such as the addition operator.
+
+Let's look at the example of the `Dog` and `Cat` objects.
+The `Dog` object has a `bark` method and the `Cat` object has a `meow` method.
+These are two methods that allow us to know the noise that the `Dog` or `Cat` instance make.
+
+Let's add the following method to the `Pet` object.
+
+----
+class Pet:
+    # other methods
+    def make_noise(self):
+        print("Generic pet noise")
+----
+
+Now, when the method `make_noise` is called, it will make the noise of the `Pet` parent class.
+However, whenever we make a new object that inherits from the `Pet` class, we want to design it so that we call the same method regardless of the class.
+
+So, when we define the `Dog` and `Cat` object, we will not define a `bark` and `meow` method, but we will know define a `make_noise` method.
+
+----
+class Dog(Pet):
+    #other methods
+    def make_noise(self):
+        print("Bark!")
+
+class Cat(Pet):
+    #other methods
+    def make_noise(self):
+        print("Meow!")
+----
+
+Now, we have a uniform way to call a function that performs a parallel operation.
+
+Let's look at a more practical example - the addition operator.
+We can look at the simple integer data type in Python.
+If we want to add two integers together, we can simply use the `+` operator.
+Let's say we want to create a new object, called `ComplexNumber`.
+`ComplexNumber` will have two properties - `real` and `imaginary`.
+A complex number is simply a number in mathematics that has both a real component and a imaginary component, using _i_ as the variable for the imaginary component.
+
+When we add two complex numbers, we add the real part together and the imaginary parts together.
+So, `(3 + 4i) + (2 - 3i) = (3 + 2) + (4 - 3)i = 5 + i`.
+
+Let's access the `__add__` method in the object.
+
+----
+class ComplexNumber:
+    def __init__(self, real, imaginary):
+        self.real = real
+        self.imaginary = imaginary
+
+    def __add__(self, other_complex_num):
+        real_sum = self.real + other_complex_num.real
+        imaginary_sum = self.imaginary + other_complex_num.imaginary
+        return ComplexNumber(real_sum, imaginary_sum)
+----
+
+Now, we have overridden the `+` operator for this object.
+We can now do the following in the console.
+
+----
+cnum1 = ComplexNumber(3, 4)
+cnum2 = ComplexNumber(2, -3)
+complex_sum = cnum1 + cnum2
+print("{} + {}i".format(complex_sum.real, complex_sum.imaginary))
+>> 5 + 1i
+----
+
+We can do the same with all other operators when we want to perform operations on complex numbers.

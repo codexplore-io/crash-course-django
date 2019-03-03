@@ -1,0 +1,25 @@
+:imagesdir: assets/images
+= Super Crash Course in Full Stack Web Development with Python and Django
+Tanner S.
+:toc: left
+:toclevels: 3
+
+include::disclaimer.adoc[]
+
+<<<
+include::introduction.adoc[]
+
+<<<
+include::chapter01.adoc[]
+
+<<<
+include::chapter02.adoc[]
+
+<<<
+include::chapter04.adoc[]
+
+<<<
+include::chapter09.adoc[]
+
+<<<
+include::chapter10.adoc[]

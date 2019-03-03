@@ -1,0 +1,845 @@
+== Django Framework Part Two
+In the previous chapter, we learned how to quickly create a Django project.
+However, we skipped over a lot of explanations.
+This chapter will focus on how Django works in more detail.
+We will begin creating your first Django project, which is a blog.
+
+=== Views
+In the previous chapter, we created functions in `posts.views.py`.
+You can generally think of a view as a one-to-one relationship with each url route.
+When you go to somewebsite.com/route, this should correspond to one view.
+
+So, we will begin creating views that will be used to perform CRUD functionality for our posts.
+First, let's go back into our `posts.views.py` and delete the `hello_world_view`.
+Let's start with the create part of CRUD for our blog posts.
+
+----
+def post_create_view(request):
+    pass
+----
+
+NOTE: It may be a little confusing at this point: our app is called `posts`, but we will also be dealing with POST requests.
+This are not the same at all, and the `posts` app is used to create blog posts.
+
+
+Where do we even start?
+Well, when you a user is creating a blog post, they are submitting a request.
+If they are sending information via a form to create something in the database, we will be relying on a POST request.
+If they have just visited the page and are about to create something, it will be via a GET request.
+The `request` argument that is passed to our view holds this information.
+
+----
+def post_create_view(request):
+    if request.method == "POST":
+        # create a blog post
+    else:
+        #showt he blog post form
+----
+
+We have not created a model for posts in our `posts.models.py` yet, but we can still get part of this completed.
+If the request is not a POST request, the request is just asking to see the form.
+So, we will just return a template that holds a form.
+
+----
+def post_create_view(request):
+    if request.method == "POST":
+        # create a post
+        pass
+    else:
+        return render(request, 'posts/create.html', context)
+----
+
+As you can see, we will be rendering the template located within the posts folder called `create.html`.
+Let's go over and create one.
+We can delete the `hello_world.html` file and create a new file within a new subfolder.
+Our project folders should now look like this:
+
+[#img-131]
+[.text-center]
+.New template
+image::13_1.png[New template]
+
+Within the templates folder, we have a posts folder with a new .html file.
+This is what will be displayed when the user submits a GET request.
+Our `create.html` will have the following:
+
+----
+<form method="POST">
+    <input type="text" name="post-title"/>
+    <input type="text" name="post-content"/>
+    <input type="submit" value="Create" />
+</form>
+----
+
+We can now see how the user will submit a POST or a GET request.
+If they just visit the page, the form will display.
+If they submit the form, it will put in a POST request, and our first `if` statement within `post_create_view` will be `True`.
+
+Now that we have that, let's create a route in our `urls.py`.
+In the previous chapter, we imported our views within the main `urls.py` file.
+However, as you have larger and larger projects, you will realize that it is hard to list all of the urls in that one file.
+So, there is a fancy method called `include` that will help us out with that.
+
+First, create a new file within your posts app called `urls.py`.
+This will contain all of the urls for this specific app.
+Within `posts.urls.py`, we will need to import `path`.
+We will also need to define a variable called `app_name`.
+This is for Django so that it can find the `urls.py` file for this app.
+Then, just as our main `urls.py` file has them, we will need to create a list of `urlpatterns`.
+Your project should now look like this:
+
+[#img-132]
+[.text-center]
+.Posts urls.py
+image::13_2.png[Posts urls.py]
+
+Now, we need to go to our main urls.py and delete our now irrelevant `hello_world_view` import and the `path` associated with it.
+We will also want to import `include` so that we can include all of the urls from our `posts.urls.py` file.
+Your `my_project.urls.py` file should now look like this:
+
+[#img-133]
+[.text-center]
+.my_project urls.py
+image::13_3.png[my_project urls.py]
+
+Instead of putting the view in the second argument of the `path` function, you put the `include` function.
+This will, you guessed it, include all of the url patterns from the file you are referencing.
+Then, we make a namespace argument.
+This will help use call the view in our templates.
+
+Let's make sure to start the server using `python manage.py runserver`.
+Then, go to your browser and visit "localhost:8000/posts/create".
+You should see the following:
+
+[#img-134]
+[.text-center]
+.post_create_view
+image::13_4.png[post_create_view]
+
+Now, let's do something similar for the next CRUD views: Retrieve/detail.
+In this view, we will not need to worry about a POST request, because there is no form that will be submitted.
+We will then write a simple function.
+
+----
+def post_detail_view(request):
+    return render(request, 'posts/detail.html', context={})
+----
+
+Since we do not have our database set up yet, this is all we can do to set up the view.
+Now, we need to make a template again.
+Simply add a new .html file called `detail.html` within your "templates/posts" folder.
+Then, we need to add the url pattern to our `posts.urls.py`.
+
+[#img-135]
+[.text-center]
+.Updated posts.urls.py
+image::13_5.png[posts.urls.py]
+
+Note that we changed the arguments in the `path` function and also imported the new view.
+Let's now make a list view that will simply give a list of all the posts.
+This will never have a POST request either, so we can do the same thing as `post_detail_view`.
+
+----
+def post_list_view(request):
+    return render(request, 'posts/list.html', context={})
+----
+
+We once again need to create our template and update the `posts.urls.py`.
+Now, we need to add two more views - the update and delete views.
+
+These will be similar to the `post_create_view` because they will be changing the database.
+First, the `post_update_view`.
+
+----
+def post_update_view(request):
+    if request.method == "POST":
+        # update the post
+        pass
+    else:
+        return render(request, 'posts/update.html', context)
+----
+
+We will also need to create a template that contains a form as well.
+Then, we update our urls.py and change the arguments in the `path` function.
+
+We will need to create our `post_delete_view`.
+This one is a little trickier.
+Let's think about what we want out of our delete view.
+We will likely press a "Delete" button for our post, and then we will be prompted with a message "Are you sure you want to delete this post?".
+So, once we click the delete button, there will be a GET request to it.
+
+----
+def post_delete_view(request):
+    if request.method == "POST":
+        # delete the post
+        pass
+    else:
+        return render(request, 'posts/delete.html', context)
+----
+
+We cannot do anything on the POST method yet, since we do not yet have the code set up for the database.
+However, we can set up our 'posts/delete.html' template.
+
+----
+Are you sure you want to delete?
+<form method = "POST">
+    <input type="submit" value="Yes"/>
+    <button>No</button>
+</form>
+----
+
+If we submit this form, we are submitting a POST request, which we will handle in the view.
+Then, we just add this to the `urlpatterns` in `posts.urls.py`.
+It now looks like:
+
+[#img-136]
+[.text-center]
+.Updated posts.urls.py
+image::13_6.png[posts.urls.py]
+
+We have now added our basic views to the model.
+
+=== Models
+Now that we have been adding views to our project, we will be adding the database layer for our posts.
+We have all the views set up, but how would `post_detail_view` work if we have no posts to show?
+We need a database set up, so let's first go to `posts.models.py`.
+
+Notice that the first import is `from django.db import models`.
+This is Django's main framework to help interact with the database.
+The "models" API helps Django programmers easily interact with the database without using SQL.
+
+Think if each model as a table in the database.
+Each table will have fields and instances.
+If you are using an Excel worksheet, you can think of the fields as the columns and the rows as instances.
+When defining a model in Django, you will create an object that represents that model.
+Then, you will define the fields within that object.
+
+We need to create a "Post" model (a table to hold all the data for our Posts).
+We will need the Post Title and the Post Content.
+Let's also create timestamps so that we know when it was created and when it was last updated.
+The syntax is as follows:
+
+----
+class Post(models.Model):
+    post_title = models.CharField(max_length = 150)
+    post_content = models.CharField(max_length = 5000)
+    created_at = models.DateTimeField(auto_now_add = True)
+    last_updated = models.DateTimeField(auto_now = True)
+----
+
+This is a lot of information to be introduced to, so let's go through it.
+First, we declare `class Post`, which inherits from `models.Model`.
+This tells Django that this is a new model that will have a table in the database.
+Then, we create properties within the object.
+These are called fields within the Django models API.
+The models framework has plenty of different types of fields.
+This tells the database what kind of information you want to hold in that field (or column if that makes more sense).
+
+Our `post_title` and `post_content` are `CharField` s because it is holding characters.
+There is a mandatory argument of `max_length` in this particular field so that Django knows how many characters it should leave room for.
+In order to access the fields, you need to use the dot operator from the `models` import.
+
+Next, we have our timestamp fields.
+They are both `models.DateTimeField` s, but have two different arguments.
+The `auto_now_add` argument means that the database will automatically save the date and time when a new instance is added to the database.
+This is exactly what we want for the `created_at`.
+However, for `last_updated`, we want it to update with the current time at every save.
+The `auto_now` argument, when set to `True`, does just that.
+You don't need to worry about memorizing the fields, as Django's website has https://docs.djangoproject.com/en/2.1/ref/models/fields/[in depth documentation]
+
+Now that we have our model coded, we need to actually send it to the database.
+Django does not automatically create the database whenever models are changed - you need to explicitly tell it to.
+So, there are two commands you need to remember - and trust me, you will.
+
+You will open your command prompt in your project and type
+
+----
+python manage.py makemigrations
+----
+
+Migrations will create a current picture of your models and database.
+However, it will not apply those changes to your database.
+It helps deal with any errors and can help you keep track of the changes you make.
+In order to apply the migration to your database, type the following:
+
+----
+python manage.py migrate
+----
+
+This will now apply the changes to the database.
+If you have done everything right, you have just created your first database!
+We can check it in the console.
+Django has a way to interact with your Django project within the command prompt.
+
+----
+python manage.py shell
+----
+
+You should see something like this in your command prompt now:
+
+[#img-137]
+[.text-center]
+.Django Shell
+image::13_7.png[Django Shell]
+
+Now, we can use the Django API to check with the database.
+We will be covering querysets in the next section.
+A queryset is a data type that holds information from your database.
+The syntax, in general, is as follows:
+
+----
+ModelName.objects.method()
+----
+
+The term `objects` accesses the model's manager and helps you access and manage instances of that particular model.
+Then, you put in any method you want within the API.
+For example, `all()` will return all instances of the model in the database.
+
+So, let's go back into our command prompt and mess with our Post model.
+
+[#img-138]
+[.text-center]
+.All Post Instances
+image::13_8.png[All Post Instances]
+
+We did a query for posts by typing `posts = Post.objects.all()`.
+Then we created a list so that we can see the title of the post by accessing the `post_title` property of each post.
+However, this returned an empty list because we have not created any instances.
+So, let's do that with the following command:
+
+----
+new_post = Post.objects.create(post_title = "My First Post", post_content = "My first post content")
+----
+
+This will create an instance and save it to the database.
+So, we can redefine our queryset to grab all of the instances, and when we print out the `post_title`, we have a non empty list.
+
+[#img-139]
+[.text-center]
+.Create Post
+image::13_9.png[Create Post]
+
+You may have noticed that we have created a redundancy.
+When we create a post, the post will have a title.
+However, we called the field `post_title`.
+We can just call it `title`.
+This can be the same with `post_content`.
+Let's change our model code to the following:
+
+----
+class Post(models.Model):
+    title = models.CharField(max_length = 150)
+    content = models.CharField(max_length = 5000)
+    created_at = models.DateTimeField(auto_now_add = True)
+    last_updated = models.DateTimeField(auto_now = True)
+----
+
+We just made a change to the model, so we will have to make a migration and then migrate that change to the database.
+First, you can exit the Django shell by typing the `exit()` command.
+So, as always, we will type `python manage.py makemigrations`.
+Sometimes you will make a change, but it will say "No changes detected".
+If this is the case, you can put an optional argument for the specific app you want to make the migrations for.
+So, you would type: `python manage.py makemigrations posts`.
+One of those should work.
+If you have any problems with migrations, remember: Google is your friend.
+
+We will see the following:
+
+[#img-1310]
+[.text-center]
+.New Migration
+image::13_10.png[New Migration]
+
+We have now made a new migration.
+We were prompted with questions about altering the field, and then it confirmed that we did.
+Next, let's `python manage.py migrate`.
+
+[#img-1311]
+[.text-center]
+.Migrating the Database
+image::13_11.png[Migrating the Database]
+
+When you migrate the database, you will see it apply the specific migration, which it does, as you can see in the previous picture.
+Now that we have a handle on setting up the back end/database side, let's incorporate them with our views.
+
+=== Querysets, Views and Models
+We have set everything up for the final part of this chapter: making views that actually do what we want them to do.
+First, we will have to understand how to use querysets, and common types of them.
+Then, we will incorporate them in our views, so that we can create instances of the model within our .html templates on the client side.
+Hopefully after this section, you will have a much better understanding of how the front end works with the back end.
+
+==== Querysets
+A queryset is a data type that is part of Django's API.
+As said before, a queryset helps us interact with the database.
+We typically access it using the `.objects` property on the Model itself.
+We will go through the most common query methods, while also keeping in mind that there are many others that you can use.
+
+===== all()
+We saw this in the previous section.
+If we type `posts = Post.objects.all()`, `posts` is now a queryset that holds all of the instances of the `Post` model.
+It is as simple as that.
+We can then iterate through them.
+
+===== create()
+We also saw this method in the previous section.
+The `create()` method accepts arguments of the fields that we used in the model.
+So, if we wanted to write a post about the Rams, we could do the following:
+
+----
+post = Post.objects.create(title="The Rams are the best", content = "Todd Gurley should be MVP")
+----
+
+This will now hit the database with a new instance.
+
+===== get()
+If we are looking for a specific instance of the Model, we can use the `get()` method.
+Something to know is that all models automatically are given an `id` field.
+So, we can get a particular instance based off of the id:
+
+----
+post = Post.objects.get(id = 1)
+----
+
+The problem with `get()` is that it will create an error if none exists.
+That is where `filter()` comes into play.
+
+===== filter()
+This is one of the most widely used methods because it helps you retrieve more specific instances of your model.
+It will take arguments of your field names as arguments.
+
+----
+posts = Post.objects.filter(title = "The Rams are the best")
+----
+
+This will return a queryset such that all titles are "The Rams are the best".
+If we had multiple querysets of the same title, we have all of those within the same queryset.
+But, if there are not posts that have that title, we will return an empty queryset without an error, which can make it a better option than `get()`.
+Remember: `filter()` is iterable.
+
+===== get_or_create()
+Another option instead of `get()` is `get_or_create()` which will look for a specific instance, and if it does not exist it will create it.
+
+----
+post = Post.objects.get_or_create(pk = 4, title = "Get or Create", content = "New Content")
+----
+
+This command will return an object in the database that fits all of the arguments exactly.
+Otherwise, it will create an instance with the arguments given.
+
+===== delete()
+Up to this point, we have only been looking at methods from the `objects` property.
+However, we would like to also look at methods we can perform on specific querysets.
+The `delete()` method is performed on a queryset and will delete all the instances within that queryset.
+
+----
+post = Post.objects.filter(pk=1).delete()
+----
+
+This will delete all those posts within that queryset from the database.
+
+===== update()
+Let's now say we want to update/change a post.
+We simply grab the post that we want through whatever way we want, and then use the `update()` method afterwards.
+The update method will take in field arguments and then change the instance accordingly.
+Let's say we have a post with a title "The Rams are the best" and we want to change it to "The Rams are the absolute best".
+We would do the following:
+
+----
+post = Post.objects.filter(title = "The Rams are the best").update(title = "The Rams are the absolute best")
+----
+
+Note that you can apply an update to more than one instance at a time.
+
+===== first() and last()
+This is very handy when dealing with `filter()`.
+If you are dealing with a queryset that is iterable, you will sometimes want to get the first instance.
+This is the case if you are using `filter()` to return all instances that have id = 1.
+We know that at most there will be one instance returned.
+However, if we use the `first()` method on the queryset, it will return the first instance in that set.
+This works like the following:
+
+----
+post = Post.objects.filter(pk=1).first()
+----
+
+==== Front End and Back End Interacting
+Now that we know how to use Python to interact with the database, let's update our views so that our views actually do the thing we want.
+We will be going through each of our views so that we can see how to interact with the database.
+However, we will be going in order of easiest to most difficult, instead of the same order we previously used.
+We will first start off with the easiest case - `post_list_view`.
+
+===== Post List View
+We will need to use Python to get all of the data and then send the data to the template.
+This is done via the context argument in the `render()` function.
+The `post_list_view` will show a list of all of the posts in the database.
+We will import the model into our `posts.views.py` first.
+Then, we can perform the `all()` method.
+
+----
+def post_list_view(request):
+    posts = Post.objects.all()
+    context = { 'posts': posts }
+    return render(request, 'posts/list.html', context=context)
+----
+
+We create a `posts` variable to hold the queryset.
+Then, since `context` is a dict, we will create a key of 'posts' and assign the posts variable as the value.
+
+Let's now go over to our template.
+We will learn a new "language" to use the context in the templates - the Django template language.
+You use this language to display the Python context in the html document.
+The syntax for the Django template language involves wrapping logic within the braces and percentage signs `{% logic goes here %}`.
+For anything you want to display in the template, use double braces: `{{ content goes here }}`.
+For example:
+
+----
+{% for p in posts %}
+    {{p.title}}
+{% endfor %}
+----
+
+If we have a key in our context dict called 'posts', we access it within this Django template language.
+Our logic falls within the `{% %}` and the output falls in the `{{}}`.
+
+Now that we have reviewed this template language, we can add it into our `posts/list.html` template.
+We will want to do some brief styling.
+Let's say we want the post title to be within a `<h3>` tag and the content to be within a `<p>` tag.
+And then we want an `<hr />` between the posts.
+We will change our `posts/list.html` file to the following:
+
+----
+{% for p in posts %}
+    <h3>{{p.title}}</h3>
+    <p>{{p.content}}</p>
+    <hr />
+{% endfor %}
+----
+
+If everything was done correctly, when we go to the 'localhost:8000/posts/list' we will see the following:
+
+[#img-1312]
+[.text-center]
+.Post List View
+image::13_12.png[Post List View]
+
+The only post we have in our database is the one we made in the Django shell earlier.
+But, it is working.
+We are looping through all of the posts we provided in the context.
+
+===== Post Detail View
+When we need to find a specific instance in the database, we need to provide the view with a way to look it up.
+That way, we have a way to get a queryset based on a filter.
+The way we do this is by passing it via the url.
+In your `posts.urls.py`, change the detail_view path to the following:
+
+----
+path('detail/<int:id>', post_detail_view, name='detail')
+----
+
+What does the `<int:id>` mean?
+This is a Django specific way to send an argument through the url.
+The first part, `int` tells Django the type of the argument being sent in.
+Then, the `id` part tells us the name of the argument that we will be able to access in the view.
+What we want to be able to do is go to a url such as `localhost:8000/posts/detail/1` and have it return the post whose id is 1 in the context to the template.
+Since we are sending another argument to the view, we should update our function declaration for `post_detail_view`.
+Then, we will have to send the post whose id is sent in the url to the template via the context.
+Our `post_detail_view` should look like the following:
+
+----
+def post_detail_view(request, id):
+    post = Post.objects.filter(id=id).first()
+    context = { 'post': post }
+    return render(request, 'posts/detail.html', context=context)
+----
+
+We will be sending a post via the context that is not iterable.
+So, the way we use this in the `posts/detail.html` template is the following:
+
+----
+<h3>{{post.title}}</h3>
+<p>{{post.content}}</p>
+<p>Created: {{post.created_at}} | Updated: {{post.last_updated}}</p>
+----
+
+This is all we need to do for the detail template.
+If we did it right, if we visit `localhost:8000/posts/detail/1`, we should see the following:
+
+[#img-1313]
+[.text-center]
+.Post Detail View
+image::13_13.png[Post Detail View]
+
+We have two views out of the way now.
+Next, let's write the `post_create_view`.
+We already handled what to do if the request is not a POST request.
+If it is, we need to access the information in the forms in the template and save that information in a model instance.
+We will take care of this within the first `if` statement in our view.
+
+----
+if request.method == "POST":
+    title = request.POST['post-title']
+    content = request.POST['post-content']
+----
+
+This is the way we get the information from the template.
+It is sent in the request.
+Then, there is a POST property of the request, where all of the POST data is sent.
+We use the key of 'post-title' and 'post-content' because those were the `name` attribute in the `posts/create.html` file.
+
+Next, we will need to check that the these two inputs are not empty.
+If they are not empty, we can create an instance and then we will redirect the users to the detail view of that post.
+Otherwise, we will prompt them with an error that says they need to fill out both forms.
+
+----
+if title and content:
+    post = Post.objects.create(title=title, content=content)
+    return redirect('posts:detail', id=post.id)
+else:
+    context['error'] = "Both Title and Content are necessary!"
+    return render(request, 'posts/create.html', context = context)
+----
+
+there are a few things that we need to cover here.
+First, we check if the `title` and `content` are empty.
+If they are not, we will redirect the user to the detail view of post.
+This is imported using `from django.shortcuts import redirect`.
+This is the same location the `render` function is imported from.
+
+The redirect function accepts an argument of 'posts:detail' and 'id=post.id'.
+What does 'posts:detail' mean?
+Well, this is where defining the `namespace` in the `include()` function comes in handy.
+The first part is the string you put in for the `namespace` in the project `urls.py`
+Then, there is a colon and the word 'detail'.
+The word 'detail' corresponds to the name we defined in the `posts.urls.py` for the `post_detail_view` path.
+The argument 'id=post.id' is the argument we send to the path in the url, that is, the `<int:id>` portion.
+
+If `title` and `content` are not given, then we will send an error via the context, that we will want to display on the template.
+So, our template will now look like this:
+
+----
+{{error}}
+<form method="POST">
+    {% csrf_token %}
+    <label for="post-title">Title</label>
+    <input type="text" name="post-title"/>
+    <br />
+    <label for="post-content">Content</label>
+    <input type="text" name="post-content"/>
+    <input type="submit" value="Create" />
+</form>
+----
+
+The `{% csrf_token %}` is a Django specific tool that adds a layer of security to the form submission.
+We will not get into the specifics of this part in this book, but it is important to know.
+Django will not let you submit a form without this CSRF token.
+We also added some labels and line breaks to make it look a little better.
+
+So, let's give it a try.
+Let's first clear the database via the Django shell and using the `Post.objects.all().delete()` method so you have a clean database in case you were playing with the database.
+Now, let's go to `localhost:8000/posts/create`.
+We have two inputs.
+If we submit it with only the 'post-title' filled out, we get the following:
+
+[#img-1314]
+[.text-center]
+.Post Create Error
+image::13_14.png[Post Create Error]
+
+The error pops up.
+But, if we type in valid inputs and create, we will get redirected to the detail view.
+
+[#img-1315]
+[.text-center]
+.Post Create Error
+image::13_15.png[Post Create Error]
+
+Now that we have typed the `post_create_view` and it is working, let's move onto the final two views: `post_update_view` and 'post_delete_view'.
+
+===== Post Update View
+The update view is going to mix the techniques we used for `post_detail_view` and `post_create_view`.
+The `post_update_view` will need to access the database by returning the post you want to update/modify.
+Then, you will need a form to modify it.
+
+Think about when you are on a website and you have data that has been created and you want to edit it.
+Typically, you will click an edit/update button, and the form will appear with the current content inside the input boxes.
+So, we will need to query the database to get the post, and then populate the input fields with the current data.
+We will then check if there is a POST request.
+If there is, then we will update the current instance.
+
+----
+def post_update_view(request, id):
+    post = Post.objects.filter(id=id).first()
+    context = { 'post': post }
+    if request.method == "POST":
+        # update the post
+        pass
+    else:
+        return render(request, 'posts/update.html', context = context)
+----
+
+We first needed to create the post variable by querying the database and looking for the post instance that matches the id, as we did in `post_detail_view`.
+This instance is sent in the context if there is not a POST request, so we will need to put that in the template.
+We do that as follows:
+
+----
+{{error}}
+<form method="POST">
+    {% csrf_token %}
+    <label for="post-title">Title</label>
+    <input type="text" name="post-title" value="{{post.title}}"/>
+    <br />
+    <label for="post-content">Content</label>
+    <input type="text" name="post-content" value="{{post.content}}"/>
+    <input type="submit" value="Save" />
+</form>
+----
+
+We have a similar set up as the `posts/create.html` template.
+However, we set the `value` attribute in the text inputs.
+This will put the `post.title` and the `post.content` in the input by default.
+Then, the user can make changes to what is already there.
+
+Now, we need to see what happens if the request is a POST.
+We will get the `post-title` and `post-content` from the `name` attributes like we did in the `post_create_view`.
+Then, we will check if the fields have content.
+If they are, then it will update, if not it will give an error.
+Our final function will look like this:
+
+----
+def post_update_view(request, id):
+    post = Post.objects.filter(id=id).first()
+    context = { 'post': post }
+    if request.method == "POST":
+        updated_title = request.POST['post-title']
+        updated_content = request.POST['post-content']
+        if updated_title and updated_content:
+            updated_post = Post.objects.filter(id=id).update(title = updated_title, content = updated_content)
+            return redirect('posts:detail', id=post.id)
+        else:
+            context['error'] = "Both Title and Content are necessary!"
+            return render(request, 'posts/update.html', context = context)
+    else:
+        return render(request, 'posts/update.html', context = context)
+----
+
+If all is good, we will redirect to the `post_detail_view` via `redirect`.
+
+===== Post Delete View
+The final part of CRUD is the delete view.
+We have learned everything we need to know in order to create the `post_delete_view`, so let's give it a shot.
+
+First, we will need to change the url patterns so that the delete path has an argument for the id.
+
+----
+path('delete/<int:id>', post_delete_view, name='delete')
+----
+
+We have already created our `posts/delete.html` template.
+So, let's focus on our view.
+If we submit the form - that is, we click the "Yes" button when asked if we are sure we want to delete, we will redirect to the list view (as the detail view will not return anything).
+So, if the request method is POST, then we will delete the post.
+The `post_delete_view` will have the following:
+
+----
+def post_delete_view(request, id):
+    post = Post.objects.filter(id=id).first()
+    context = { 'post': post }
+    if request.method == "POST":
+        post = Post.objects.filter(id=id).delete()
+        return redirect('posts:list')
+    else:
+        return render(request, 'posts/delete.html', context = context)
+----
+
+We once again added the `id` argument, then checks the type of request, and deletes it if `request.method == POST`.
+So, to test, go to `localhost:8000/posts/create` and create a new post instance.
+You will be redirected to the detail view.
+You can then, replace the word 'detail' with delete in the url.
+If everything was done correctly, you will see the following:
+
+[#img-1316]
+[.text-center]
+.Post Delete View
+image::13_16.png[Post Delete View]
+
+If you have done everything correctly, when you press "Yes", you will be redirected to the `post_list_view` and the post you just deleted will no longer be there.
+
+Congratulations!
+We have gotten through all of our views.
+The next step will make our website much easier to navigate - we will be adding links to other views within the website.
+
+==== Links
+We want to be able to let the user go to views in the templates without having to go directly into the URL.
+We can use an `<a>` tag to do this, but how do we do this in Django?
+Generally speaking, we want to avoid using absolute url references to a specific url within our project.
+Django has a way to reference other views easily within the `<a>` tags.
+
+The syntax is as follows:
+
+----
+{% url 'viewname' arg=id %}
+----
+
+This is what we will put in the `href` attribute in our `<a>` tags.
+So, let's start on the `post_list_view`.
+It would be nice if we were able to click the title of the post, and it takes us to the `post_detail_view` for that instance.
+So, we will be changing the `posts/list.html` template to the following:
+
+----
+{% for p in posts %}
+    <h3><a href="{% url 'posts:detail' id=p.id %}">{{p.title}}</a></h3>
+    <p>{{p.content}}</p>
+    <hr />
+{% endfor %}
+----
+
+The argument `'posts:detail'` is the same syntax that we used in the `redirect` function.
+We will then be sending the id of the current post's id so that it can resolve to the specific template.
+If you have done it right, you will see your `post_list_view` look like something similar on the left and when you click on the title, it will take you to the right.
+
+[#img-1317]
+[.text-center]
+.Links
+image::13_17.png[Links]
+
+Now, we will think of two other ways to incorporate links so that it is easier for users.
+We want a button in our list view to create a new post, and then we want two buttons to edit/update and delete the post in our `post_detail_view`.
+
+Let's create the link to the `post_create_view`.
+All we need to do is put the following code somewhere on our page outside of the for loop of the `posts/detail.html` template:
+
+----
+<a href={"% url 'posts:create' %"}>Create Post</a>
+----
+
+The list view will now look like this:
+
+[#img-1318]
+[.text-center]
+.Create Post Link
+image::13_18.png[Create Post Link]
+
+We have a link that will take us to the `post_create_view` now.
+
+Now, let's add the other buttons to the `post_detail_view`.
+We will add the following to the end of our `posts/detail.html` template:
+
+----
+<br />
+<a href="{% url 'posts:update' id=post.id %}">Edit</a>
+<a href="{% url 'posts:delete' id=post.id %}">Delete</a>
+<a href="{% url 'posts:list' %}">Back</a>
+----
+Now, our post detail view will look like the following:
+
+[#img-1319]
+[.text-center]
+.Post Detail View
+image::13_19.png[Post Detail View]
+
+Now, we can easily go between different views on the client side.
+We also added a "Back" button so that we can easily go to the list of posts again.
+
+This chapter was a long chapter that focused on a lot of pure Django concepts.
+In the next chapter, we will be adding some styling to our project so we know how it works with Django.
+But, the emphasis will be to make our project look better.

@@ -1,0 +1,452 @@
+== Responsive Design and Bootstrap
+Responsive Design is an integral part to modern web design.
+Responsive Design refers to a design philosophy that allows a website or web app to look great on screens of all sizes.
+Before mobile devices, this was not much of a consideration.
+However, as time has gone on, mobile devices and other devices that do not have the same screen size/proportions as normal desktops/laptops have become more and more common.
+It is therefore extremely important to create websites that are responsive - that is, responds to changes in the size of the screen.
+Let's look at an example.
+
+W3Schools.com implements responsive design.
+On a normal screen, the website looks like this:
+
+[#img-41]
+[.text-center]
+.Desktop View W3 Schools
+image::4_1.png[Desktop View W3 Schools]
+
+This is no surprise - it has been seen before.
+However, when we look at it on a mobile device, it looks like this:
+
+[#img-4_2]
+[.text-center]
+.Mobile View W3 Schools
+image::4_2.png[Mobile View W3 Schools]
+
+The mobile view is much different than the desktop view: the content becomes stacked on top of each other so it can be easily viewable in the width of the screen.
+In addition, the navbar has collapsed, to be expanded when you click the three bars at the top of the screen.
+This is a common responsive design tactic for the navbar.
+We will go into media queries and then learn Bootstrap, a front end framework developed by Twitter that makes responsive design very easy to implement.
+
+=== Media Queries
+A media query is how you can set different styles based on different screen sizes.
+In your CSS, you will define all of your styles.
+Then, you will create media queries which specify the styles you want in different screen sizes.
+So, let's say we have the following code:
+
+----
+<html>
+    <head>
+        <style type = "text/css">
+            .responsive-class{
+                background-color:yellow;
+            }
+        </style>
+    <head>
+    <body>
+        <div class = "responsive-class">
+            This content is within a responsive class.
+        </div>
+    </body>
+</html>
+----
+
+It should not surprise you that it will look like the following in the browser:
+
+[#img-4_3]
+[.text-center]
+.Responsive Design - Desktop View
+image::4_3.png[Responsive Design - Desktop View]
+
+Our webpage will look like this regardless of the size without any media queries.
+However, let's change the code in the `<style>` tag to the following:
+
+----
+<style>
+    .responsive-class{
+        background-color: yellow;
+    }
+    @media (max-width: 500px){
+        .responsive-class{
+            background-color: red;
+        }
+    }
+</style>
+----
+
+[#img-4_4]
+[.text-center]
+.Responsive Design Under 500px
+image::4_4.png[Responsive Design Under 500px]
+
+The image above shows what the webpage will look like given this style.
+What this does is set a style on screens with a maximum width of `500px`.
+If it is more than `500px`, `.responsive-class' will have a `background-color: yellow;`.
+This is the premise of responsive design: you will set media queries for all your classes and ids so they know how to behave on different screen sizes.
+You could put any styles in the media query and also change the `max-width` property to `max-height`, `min-width` and `min-height`.
+There are many other ways to set media queries, and there are plenty of resources that list these ways out.
+Thanks to many different tools on the internet, responsive design can be done much more efficiently than constantly making media queries.
+Bootstrap, for example, is a library that does much of this for you.
+We will jump into it now.
+
+=== Bootstrap
+Bootstrap is a front end framework/library that allows you to easily create mobile-friendly websites.
+Not only is it great for mobile websites, but it has a lot of handy helper features that make styling very easy.
+Bootstrap makes it very easy to get it in your webpage.
+In your `<head>`, simply add the following link:
+
+----
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+----
+Then, at the end of your `<body>`, add the following:
+
+----
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+----
+
+This is all you need to get Bootstrap started.
+Bootstrap is just a stylesheet and Javascript scripts that you can use.
+For future reference, you can get your Bootstrap links https://getbootstrap.com/docs/4.3/getting-started/download/#bootstrapcdn[here].
+
+One of Bootstrap's main features is its grid system.
+The grid system organizes the HTML in a way that will change the layout when it goes to certain screen sizes.
+As we are going through this chapter, try adjusting the size of your screen to different heights and widths to understand how the style changes.
+
+==== Grid
+Bootstrap first starts by using containers.
+Containers are used to help organize your html when you are organizing it.
+Within containers, you have rows and columns that you organize your code in.
+
+===== Containers
+Bootstrap has two types of containers - `container` and `container-fluid`.
+A `container` will have a width that is responsive to the size of the screen and will not take up the entire width.
+A `container-fluid` element, on the other hand, will have a width of 100% - meaning it will take up the entire width of its parent element.
+These are classes that are assigned to html elements.
+So, to implement them, you would use the following.
+
+----
+<div class = "container" style = "background-color: blue;">
+    This is my container.
+</div>
+
+<div class = "container-fluid" style = "background-color: red;">
+    This is my container-fluid.
+</div>
+----
+
+[#img-4_5]
+[.text-center]
+.Containers
+image::4_5.png[Containers]
+
+As you can see, the `container` will not have the same width as `container-fluid`.
+The `container` class will change its width depending on the size of the screen, whereas `container-fluid` will always have `width: 100%`.
+You will typically apply these classes to `<div>` elements.
+
+===== Rows
+Within a container, you will have multiple rows.
+This is how Bootstrap arranges content - rows within a container.
+
+It is defined as the following:
+----
+<div class = "container">
+    <div class = "row">
+        CONTENT GOES HERE
+    </div>
+</div>
+----
+
+===== Columns
+Bootstrap's columns is where the magic really happens.
+Within each row, there are twelve potential columns.
+However, there can be anywhere between 1-12 columns per row.
+It is segmented by 1, and you will want the class of your columns to add up to 12.
+This does not mean a lot without looking at it more.
+
+Let's say we have content that we want to be split into two columns of equal width on a page.
+We can simply will type the following:
+
+----
+<div class = "container">
+    <div class = "row">
+        <div class = "col-6">
+            This is "col-6"
+        </div>
+        <div class = "col-6">
+            This is the second "col-6"
+        </div>
+    </div>
+</div>
+----
+
+Which will result in the following:
+
+[#img-4_6]
+[.text-center]
+.Columns
+image::4_6.png[Columns]
+
+The two columns will take up 6 of the 12 sections that Bootstrap divides rows up into.
+That means that each column will take up half of the screen.
+We could also do the following:
+
+----
+<div class = "container">
+    <div class = "row">
+        <div class = "col-4">
+            This is "col-4"
+        </div>
+        <div class = "col-4">
+            This is the second "col-4"
+        </div>
+        <div class = "col-4">
+            This is the third "col-4"
+        </div>
+    </div>
+</div>
+----
+
+This would look like this:
+
+[#img-4_7]
+[.text-center]
+.Three Columns
+image::4_7.png[Three Columns]
+
+Each of these columns will take up one third of the page.
+This makes it easy for responsive pages, as the actual width of the columns will change based on the size of the screen.
+
+However, Bootstrap makes it even better.
+What if our screen gets too skinny?
+Our columns will get very squished and we would potentially see one word per line per column, like the following:
+
+[#img-4_8]
+[.text-center]
+.Skinny Screen
+image::4_8.png[Skinny Screen]
+
+Bootstrap sets up media queries to take care of this.
+They have set four different screen sizes: `xs`, `sm`, `md`, and `lg`.
+These screen sizes correspond to different breakpoints.
+
+.Summary of Bootstrap Breakpoints
+|===
+|Label |Breakpoint
+
+|`sm`
+|Greater than or equal to `576px`
+
+|`md`
+|Greater than or equal to `768px`
+
+|`lg`
+|Greater than or equal to `992px`
+
+|`xl`
+|Greater than `1200px`
+
+|===
+
+So, the way these work is to implement them in the `col-` classes.
+The syntax would be `col-[breakpoint]-[number]`.
+Let's jump right into an example.
+
+----
+<div class = "container">
+    <div class = "row">
+        <div class = "col-sm-3">
+            This is "col-sm-3"
+        </div>
+        <div class = "col-sm-3">
+            This is the second "col-sm-3"
+        </div>
+        <div class = "col-sm-3">
+            This is the third "col-sm-3"
+        </div>
+        <div class = "col-sm-3">
+            This is the fourth "col-sm-3"
+        </div>
+    </div>
+</div>
+----
+
+This will create breakpoints at 576 pixels.
+What the html classes are saying is that when the width of screen is at 576 pixels or more, the columns will stay next to each other.
+However once it goes below, the content will stack on top of each other.
+
+[#img-4_9]
+[.text-center]
+.Over 576px on left, under 576px on right
+image::4_9.png[Over 576px on left, under 576px on right]
+
+You can do the same with the `md`, `lg`, and `xl` with a variety of columns.
+We can also apply multiple breakpoints.
+Let's say we have four `col-3` in a row.
+When we get to a certain point, we want two rows of `col-6` and when it gets smaller, then we want it to be four rows.
+This will be done using the following code:
+
+
+----
+<div class = "container">
+    <div class = "row">
+        <div class = "col-md-3 col-sm-6">
+            This is "col-sm-3"
+        </div>
+        <div class = "col-md-3 col-sm-6">
+            This is the second "col-sm-3"
+        </div>
+        <div class = "col-md-3 col-sm-6">
+            This is the third "col-sm-3"
+        </div>
+        <div class = "col-md-3 col-sm-6">
+            This is the fourth "col-sm-3"
+        </div>
+    </div>
+</div>
+----
+
+It tells the columns how to behave in different breakpoints.
+So, first it will abide by the `col-md-3` behavior, then it will abide by the `col-sm-6` behavior.
+Our webpage will look like the following:
+
+Before it hits `md`:
+[#img-4_10]
+[.text-center]
+.Greater than `768px`
+image::4_10.png[Greater than `768px`]
+
+Before it hits `sm`:
+[#img-4_11]
+[.text-center]
+.Greater than `576px`
+image::4_11.png[Greater than `576px`]
+
+Before it goes below `sm`:
+[#img-4_12]
+[.text-center]
+.Less than `576px`
+image::4_12.png[Less than `576px`]
+
+Now that we have learned how the Bootstrap grid works, let's look at some other Bootstrap features.
+
+==== Other Features
+Bootstrap is great for responsive design for the entire layout of the page.
+It also has a few other utilities that make it useful.
+
+===== Navbar
+The Bootstrap Navbar is one of the best features, in my opinion.
+It creates a navigation bar that collapses when it gets to a certain breakpoint.
+So, it will look like a normal navigation bar at the top of the screen until it hits a certain point.
+Then, it will collapse the actual navigation links and show a button that you can click to reveal the navigation links.
+Bootstrap has great documentation, so whenever I need a component, such as a navbar, I will start off with the code they have in an example, and then change it accordingly.
+Using the https://getbootstrap.com/docs/4.3/components/navbar/[Navbar from Bootstrap's documentation], we can start with the following code.
+
+----
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+        </li>
+    </div>
+</nav>
+----
+
+In a screen that is `992px` and larger, it will look like this:
+
+[#img-4_13]
+[.text-center]
+.Greater than or equal to `992px`
+image::4_13.png[Greater than or equal to `992px`]
+
+And smaller screens, such as mobile, will look like this:
+
+[#img-4_14]
+[.text-center]
+.Less than `992px`
+image::4_14.png[Less than `992px`]
+
+
+Their default Navbar in the first example code is much more complex, with many different item types.
+However, let's start with the previous code.
+
+We first have our entire `<nav>` tag that will be the parent.
+The `class=navbar-expand-lg` will determine when the navbar collapses, which is the `992px` breakpoint.
+Then, we have our first link with `class="navbar-brand"`.
+This is where you would put the title of your page, let's say, or maybe a logo.
+
+Then, you have a button with `class="navbar-toggler"`.
+This is what shows up when your screen is under `992px`.
+
+We can now go to the links of the navbar, `<div class = "collapse navbar-collapse">`.
+This is the part of the navbar that will collapse.
+Within this, we have our `class="navbar-nav"` which is where all of the links are.
+
+Those are the basics of navbars.
+You can look at the documentation for all of different types of links for navs.
+
+===== Common CSS Classes
+Bootstrap has a lot of helper functions that assist with common CSS styling.
+These include padding, margins, display and position, among others.
+
+Generally speaking, there is a very simple pattern to apply certain styles to a tag.
+They will start with a prefix:
+
+. `padding`: `p`
+. `margin`: `m`
+. `display`: `d`
+. `position`: `position`
+
+====== Padding and Margin
+
+Let's look at https://getbootstrap.com/docs/4.3/utilities/spacing/[`padding` and `margin`].
+After the first letter, you will have another letter or a `-`.
+
+. `-`: all
+. `t`: `top`
+. `b`: `bottom`
+. `l`: `left`
+. `r`: `right`
+
+This shows where you will put the `padding` or `margin`.
+Then, you will put an integer between 0 and 5, or `auto` to determine how much margin or padding.
+These integers will increase the amount of padding or margin, based on Bootstrap's own calculations that you can change with Sass.
+So, let's look at a few examples.
+
+. `pt-1`: `padding-top`
+. `mb-3`: `margin-bottom`.
+. `p-2`: `padding`
+
+The integers, once again, are determined by Bootstrap, but can be changed.
+For beginners, you can just use these classes to have a general increase or decrease in padding/margins, but you will not be able to be very specific.
+
+====== Display
+We first use `d` to set a class for `display`, then we put one of the values for `display`, such as `inline` or `inline-block`.
+
+. `d-inline`: `display: inline`
+. `d-none`: `display: none`
+
+We can also mix in some break points, such as `d-md-none`, which will give the element a `display: none` value below the `md` breakpoint.
+
+====== Position
+Position is easy.
+All you need is the `position-` prefix, and then type the value you want.
+The following will give the `<div>` the style `position: absolute`.
+
+----
+<div class = "position-absolute">
+</div>
+----
+
+Bootstrap has many, many great features, and we barely covered them in this chapter.
+I suggest to read the documentation more and use it when you can see the functionality of it.
+When we start creating a Django project, we will implement these features on the front end.

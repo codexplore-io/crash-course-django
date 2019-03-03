@@ -1,0 +1,364 @@
+== Introduction to Django and Back End Development
+We have finally reached Django!
+I hope you are excited.
+We will finally be putting together all of your knowledge and learn how to create full stack web apps.
+This chapter will first focus on high level definitions and concepts, and then we will jump right into Django.
+Try not to stress out too much when we make our "Hello World" program.
+I will be flying through many different concepts - I just want to get you familiar with the overall picture.
+The following chapters will go more in depth about the different parts of the Django environment.
+
+=== Understanding the Back End
+The back end of a website, in simplest terms, is the part of the website that deals with the data of the website.
+You can think of most websites and web apps as a database with a mask on it.
+Let's consider at a simple example - what if you wanted to make a version of YouTube from scratch.
+Well, there are a few things to consider.
+
+First, you want to look at the user's point of view.
+What is the easiest way for them to post videos, search videos and interact with other users?
+Next, you want to look at the back end - what is the best way to store all of the videos and information, such as users, video descriptions, video names, etc.?
+You will make a database that holds all of this information.
+If you really wanted to, you can just make a database, then make everyone learn SQL so that they can query different videos and users.
+Or, you can put a mask on the database - and create buttons to perform different queries.
+
+Let's say you wanted to search for a video.
+A search bar and a search button are all you need to create a simple query in the database.
+This is the "mask" that makes it easier.
+But the main functionality of dynamic websites comes from the back end.
+
+NOTE: I am not sure if I had heard of this "mask" metaphor from someone else
+If I am suing someone else's metaphor, let me know and I will give proper attribute.
+
+Django is a back end framework that uses Python.
+Flask is another framework that uses Python.
+Node.js is an extremely popular one that uses Javascript.
+Ruby on Rails is one that uses Ruby.
+There are many different frameworks, and Django is just one of them.
+When you hear these terms being thrown around, they are simply ways to help build out dynamic websites using different languages.
+
+==== Servers and Databases
+Before we start going into Django, we should talk about servers and databases on a higher level.
+
+A *server* can be thought of as a computer that performs tasks.
+I purposely left this as a vague, general statement because it will help you actually understand what it is.
+When you are accessing a website, you are asking for something from a server.
+The server is what stores all of the information and gives you the data and/or files back.
+
+So, when you go to www.google.com, you are asking Google's server to display the .html file that will help you search for whatever it is you are looking for.
+Your computer can act as a server.
+In fact, when you are developing an application locally, you will use your computer as the server.
+Django has a very easy way to do this, and you will be able to get up and running quickly.
+
+When you deploy your app, you will essentially be copying all of your project files to another location instead of your own computer.
+We call your local environment your development server and the server you will be using for deployment your production server.
+
+A *database* is a collection of data.
+Databases can be in various different formats.
+An easy example is in Excel.
+If you want to create a database, you can create a new workbook.
+Each sheet will be a table.
+You can save this workbook with all of the information, and it will be, in effect, a database.
+
+However, when we are talking about back end development, we are not referring to an Excel spreadsheet as a database.
+Databases will typically rely on a language called Structured Query Language (SQL).
+SQL is a widely used language that helps manage the data in your databases through queries.
+A *query* is a command that will create, update, retrieve or delete data in your database.
+
+When you are making a Django project, your data will likely be held in a database that uses SQL.
+Django makes it easy to communicate with SQL databases, as we will learn.
+
+=== What is Django
+Django is a web development framework that is written in Python.
+It creates an easy way to create large, scalable web apps that can easily link up the front and back end.
+Django is a combination of many different modules that allows for things such as serving static files on the front end, managing your database schema, and organizing your routing.
+
+Django's official website brands Django as "The Web framework for perfectionists with deadlines."
+You can get it up and running extremely quickly, and it is very programmer friendly.
+Let's see how it works from a high level point of view.
+
+=== Model View Template (MVT)
+Django is built on the Model-View-Template (MVT) framework.
+The MVT framework is how a web app is organized when going between the front end (client side) and back end (server side).
+
+[#img-121]
+[.text-center]
+.Model View Template
+image::12_1.png[Model View Template]
+
+As you can tell in the figure above, there are a few steps to see how Django works under the scenes.
+First, you start off at your computer.
+Let's say you go to a website that is built with Django.
+It goes to the website address, let's say http://www.codexplore.io[www.codexplore.io].
+When it visits this website, it looks through all of the possible URL routes to look for the route that you submitted.
+Once it finds the URL route, it will call for a View to be shown to the user.
+
+The View can show static data or can access the database.
+If it is static, the view just returns a Template (html) file to the url router and displays it on the screen for the user.
+If the View needs to access the database, it will do so by looking through the Models and returning a query to the View.
+Once the View has the data, it will send the data to a Template to display the data on the .html file, and then send that template back to the url router which will send it to the user.
+
+It can be easy to think about it as an assembly line.
+Every stop is going to be a function that is called, and will likely return another function or some other information.
+It will go down the assembly line by calling all of the functions.
+Then, when it reaches the final function call, it starts returning all of the information back to the functions and will eventually return the .html file to the client.
+Let's start using Django to see how Django projects are organized within the actual code.
+
+=== Installing Django
+Since you have Python already installed on your computer, you can easily install Django using the following command
+
+[literal]
+pip install django
+
+This command will install the most up to date version of Django.
+The most current long term support (LTS) version of Django is 1.11, but it is not the most current version.
+This book uses any version of Django 1.11 and later, so you can use whichever version you would like.
+I will make sure to explain any major differences in implementation between different versions as we go along.
+
+=== First Django Project
+Now that we have Django installed, open up a command prompt.
+Once the prompt is open, navigate to a folder, or create one in the prompt.
+It can be saved in any part of your computer that you want.
+A Django project is just a collection of python files, so you can save those files in a place that is most organized for you.
+
+Once you are in the directory that you want to create your Django project, type the following command:
+
+[literal]
+django-admin startproject myproject
+
+There are three parts to this command.
+First, we type in `django-admin`.
+This let's our computer know that we want to create a Django app, and that the following code will correspond with Django's commands.
+The next part is `startproject`.
+This tells Django that we want to create a new Django project, and it will create all the files and folders that we need to do so.
+Lastly, we typed in `myproject`.
+Django will name the project "myproject".
+We could make this last argument anything we want, as long as it follows Django's naming guidelines.
+It will reject any names that are incompatible with Django.
+
+Let it take some time to create the project if it does take time.
+Once you do, open the project in your favorite text editor.
+I use Atom, so a blank project will look like the following:
+
+[#img-122]
+[.text-center]
+.First Django Project
+image::12_2.png[First Django Project]
+
+In Atom and most text editors, the folder you are in will show up on the left side and you can expand or shrink what you see.
+
+Django projects have a subfolder that is the same name as the project.
+This subfolder has the default project level folders.
+
+=== Django environment walkthrough
+
+First, the `__init__.py` file is simply a Python convention for things like importing.
+Next, there is the `settings.py` file.
+This is an extremely important file that we will be using quite often.
+When you open it, you will see many different variables.
+These are all variables that your project will be using when calling different functions and performing different tasks.
+You will notice as you scroll through this file, that it is simply a collection of strings, lists, dictionaries and other variables.
+We will not go into specifics of each variable now, as it will only make sense while we progress through Django.
+
+After our `settings.py`, we see our `urls.py`.
+This file is where all of our urls will be saved.
+We will have different patterns that the user can browse.
+Django will look for the url pattern that is in the address bar.
+We will go into this later.
+
+The last file is not a large concern for a while.
+`wsgi.py` is a configuration file when your project is deployed.
+We will get into this later, but it is good to know that it is there and what it generally does.
+
+A Django project is built with many different apps.
+This seems a little confusing, because we have been talking about building a web app.
+Within the Django framework, the Django project will be your web app.
+The Django project is then broken up into different apps that do different specific functions for your project.
+
+In the command prompt, make sure that you are in the Django project folder.
+If you list the files in the directory, you will see the `myproject` folder and a `manage.py` file.
+
+Let's say we are making a blog project.
+We will make an app that specifically deals with blog posts.
+In terms of architecture, each app will be named after the main data table (or Model) that your app focuses on.
+So, we will create a data table to hold all of the posts.
+We will go more into specifics when we learn about Models.
+
+In order to create an app, we type in the following line of code
+
+[literal]
+python manage.py startapp posts
+
+There are four parts to this command, so let's walk through them.
+First, `python` tells the command prompt that the following code will be a Python command.
+`manage.py` runs the python script `manage.py` that is located in your project directory.
+Then, `startapp` will tell the `manage.py` script which command it will run.
+If you are bored, you can look into `the manage.py` file and then look at the Django docs to understand those two steps more.
+The last portion defines the name of the app, `posts`.
+This can be named anything you want within the guidelines of the Django naming conventions.
+
+When you run this command, wait for it to complete.
+Your Django project will now look like this in your text editor.
+
+[#img-123]
+[.text-center]
+.Django Project with Posts App
+image::12_3.png[Django Project with Posts App]
+
+A new folder has appeared!
+Congratulations on making your first app.
+We have also been introduced to a few new Python files.
+
+First, we have `admin.py`.
+This file will deal with features on the admin section of your website relative to this app.
+Each Django project has an already built out Admin interface that allows you to work with your project easily.
+
+Next, we have `apps.py`.
+This is really outside the scope of this book.
+
+Then, there is `models.py`.
+This will be where you will put your Model - the "M" in MVT - for your app.
+We will eventually create an object in here called `Post`, which inherits from `models.Model`, but we will get there.
+
+`tests.py` is where you will put code for testing your other code.
+We will not be using this much in the context of this book, but writing tests for your code can save you a lot of time.
+
+Lastly, but certainly not least, we have `views.py`.
+This is where we put all of our views for our app, the "V" in MVT.
+
+Whenever you create a new app, you need to go into your `settings.py` for your project, and scroll down to the `INSTALLED_APPS` list.
+Then, you write the name of your new app in the list.
+It should look like the following:
+
+[#img-124]
+[.text-center]
+.Adding new app to `settings.py`
+image::12_4.png[Adding new app to `settings.py`]
+
+We will learn why this is important in more detail, but make this a habit whenever you create a new app.
+
+=== Hello World program
+Let's start with our first app.
+Go back to the command prompt and type the following command in:
+
+[literal]
+python manage.py runserver
+
+This is a very powerful command that is worth looking at.
+Django works by using Python.
+Python is a language that requires some sort of execution, so Django will need to run on a server.
+What this command does is create a local server that will serve as your development environment.
+Once you run this command, you will see the following in your command prompt:
+
+[#img-125]
+[.text-center]
+.Starting up Django server
+image::12_5.png[Starting up Django server]
+
+There is a line that starts with "Starting development server at..." after running the `runserver` command.
+If you copy the url in that line into your address bar, you will see something like this:
+
+[#img-126]
+[.text-center]
+.localhost:8000
+image::12_6.png[localhost:8000]
+
+This is your main page.
+When you go to your url, in this case, `localhost:8000`, it will display this page, unless you decide otherwise.
+We will walk through how to make a page that displays "Hello World!".
+
+First, we need to start adding templates.
+In your project folder, create a new folder called "templates".
+This is where you will keep you .html files.
+There are a few different design patterns for templates that we will learn, but this is where we will start.
+
+Next, go to your `settings.py`.
+Towards the top of your `settings.py`, there is a variable called `BASE_DIR`.
+This is a definition for your project that tells you the path of the project directory, and will format it.
+Underneath the definition of `BASE_DIR`, add the following,
+
+----
+TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
+----
+
+This creates a new variable that stores the location of your template - that is, the folder that you just created.
+Then, scroll down further in your `settings.py` and look for a variable called `TEMPLATES`, which contains different settings and options for your templates for your Django project.
+Within this list is a dictionary.
+There is a key called `DIRS`, with a value of a list.
+The value of this item will be a list of locations of where your templates are saved for your Django app.
+Within this list, type in `TEMPLATE_DIR` - the variable you just defined.
+So, this will look like the following:
+
+[#img-127]
+[.text-center]
+.`settings.py`
+image::12_7.png[settings.py]
+
+We have now set up our Django project to know where to look for our templates.
+Our goal is to create a template that says "Hello World" when we visit "localhost:8000".
+In the MVT framework, we do not have a model, as there is no data that we will be accessing - just static information in the form of "Hello World."
+We need to create a view so the browser can ask for a template.
+We have also created a 'templates' folder, but we still need an .html file as a template.
+
+In your 'templates' folder, create a new file called "hello_world.html".
+In this file, type the following code:
+
+[literal]
+<h1>Hello World!</h1>
+
+Our Django project needs to now be told how to show this .html file
+
+Go to your posts folder and open the `views.py` file.
+Within this file, we will be writing functions and classes that will handle our views in the MVT framework.
+
+Type the following after the imports.
+
+----
+def hello_world_view(request):
+    return render(request, 'hello_world.html')
+----
+
+This function takes in the request, and will eventually resolve by returning an .html file (in conjunction with the `urls.py` file).
+Your `views.py` file should look like the following:
+
+[#img-128]
+[.text-center]
+.`views.py`
+image::12_8.png[views.py]
+
+Last, we need to create code in our `urls.py` file that will tell our Django project which route will handle our `hello_world.html` file
+In the "my_project" folder, open the `urls.py` file.
+You will have a list of URL patterns in the form of a list called `urlpatterns`.
+This tells the Django project which routes to look for.
+Django's URL patterns will need a function to execute so that it knows how to display the template.
+We will be giving them the `hello_world_view` function.
+So, first import the function after the project imports:
+
+[literal]
+from posts.views import hello_world_view
+
+Next, add the following line to the `urlpatterns` list.
+
+[literal]
+path('', hello_world_view)
+
+Your `urls.py` file should look like this:
+
+[#img-129]
+[.text-center]
+.`urls.py`
+image::12_9.png[urls.py]
+
+Now, we should be ready to go.
+If you no longer have your Django server running, type `python manage.py runserver` into the command prompt.
+Otherwise, just refresh the browser you have open.
+It should look like the following:
+
+[#img-1210]
+[.text-center]
+.`Hello World`
+image::12_10.png[Hello World]
+
+Congratulations!
+You have just made your first Hello World Django project.
+Obviously this is a lot of work for just a static website.
+This situation would be much easier by just making an html file.
+However, a we will see, Django's strengths come from displaying dynamic content.

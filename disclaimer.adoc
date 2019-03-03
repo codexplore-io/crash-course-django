@@ -1,0 +1,20 @@
+== Disclaimer
+Throughout my self teaching, I have used many different resources, mainly so I can know what topics are important to include.
+One of the great things about the programming community is the open source nature, of which people have complete ability to copy anything that is free on this website and do what they want with it.
+I did not directly copy any other work while writing this book.
+However, if I have inadvertently copied someone else's work, please let me know and I will give the proper attribute.
+
+I am not the only person to create guides for Django and web development.
+The following are great resources to learn more and answer any questions you may have:
+
+1. https://www.w3schools.com[W3 Schools]
+2. https://simpleisbetterthancomplex.com/[Simple is Better than Complex]
+3. https://djangogirls.org/resources/[Django Girls]
+4. https://www.codingforentrepreneurs.com/[Coding for Entrepreneurs]
+5. https://twoscoopspress.com/products/two-scoops-of-django-1-11[Two Scoops of Django]
+6. Stack Overflow
+7. http://codingheroes.io/[Coding Heroes]
+8. https://medium.com/[Medium]
+
+In addition, there may be some elements that are inaccurate, or there may be typos.
+If you notice anything, please let me know as well.

@@ -1,0 +1,84 @@
+== Introduction
+This book was written to be a very broad crash course in Full Stack Web Development in Python.
+It covers a lot of topics and tries to dive into each one sufficiently.
+However, each of these topics could (and do) have an entire book written on them.
+
+I tried to write this to give a written crash course/bootcamp that can be used as a reference for those who have never programmed, or have never done web design.
+Part of the problem of learning is not knowing where to start.
+This book will touch on many topics that should be learned by programmers if they want to get into web development.
+It should act as an outline and an introduction to many of these skills.
+When you are done, you will be able to create a pretty significant amount of code, but this should only be the beginning of your learning.
+Unfortunately, you will not be an expert by the end of this book.
+Programming changes so rapidly that it is very difficult to stay current, so you will constantly be learning.
+
+In order to fully learn the content of this book, you should make sure to code along with the examples as much as you can.
+In addition, you should try changing and playing with the examples to see how it affects different parts of your code.
+This will help you get a firmer grasp on the concepts.
+It would be ideal to be able to do that in real time in this book, but it makes it quite difficult without an accompanying video.
+
+I also tried to make sure this book has standalone chapters.
+If somebody just wants to learn Python, they can focus on the Python chapters.
+This is different in the case of the Django chapter, because it is project based over a few chapters.
+Now, there may be necessary overlap, but some concepts, such as loops and logic are repeated in multiple chapters in different languages.
+Because a lot of the concepts are the same, the text will be nearly identical, but it will have different syntax.
+
+Javascript is not covered in this book, however.
+I have realized that many different crash courses teach Javascript and JQuery, but I have rarely used it in a practical setting, as most of what I need to do can typically be accomplished via CSS and the backend.
+This is not to say that Javascript is not widely used.
+There are many different Javascript libraries and frameworks that are widely used, and many are among the most popular, including React, Angular and Node.
+However, that is beyond the scope of this course.
+Learning Javascript will not really have a lot of applicability in the context of this book, but I will be writing more material that leverages the power of Javascript.
+
+Lastly, this book tries to focus on concepts rather than memorization.
+Memorization will come with practice.
+I try to explain the concepts more than the specific applications of the concepts, as there are plenty of resources online that can be used as a reference.
+
+=== Terms that will be used
+We will be using a lot of potentially new terms in this book.
+Terms will be brought up with each concept, but the following are ones that you should know ahead of time.
+
+*Syntax* is the way a programming language is written.
+Each programming language has a different way of writing the same task.
+Python has a different syntax than Javascript, for example.
+The logic in each programming language is very similar, if not identical.
+The syntax is the thing that changes, and the biggest part of the learning curve when learning a new programming language if you already know how to code.
+
+*Front End Development* is the programming of the user facing part of the website.
+You may also hear the term "Client Side."
+
+*Back End Development* is the part of web design that focuses on the website beneath the surface.
+This includes working with databases and the data itself.
+You may also hear it called "Server Side."
+
+=== What is Programming?
+Programming, or coding, is simply a way of writing down a list of instructions that you want the computer to do.
+As a programmer, you can think of yourself as a translator.
+Instead of translating from one person's language to another person's language, you are translating from human to computer.
+That is really all it comes down to.
+
+==== Ten Commandments of Coding
+In order to learn how to program, there are a few things that you should keep in mind.
+I compiled a list of rules that are widely considered to be important during your programming career.
+I did not come up with these myself, and you will probably see these rules repeated by many different people.
+
+1. Don't repeat yourself
+2. Keep it simple, stupid (KISS). This can also be described as "less code is better than more code" or "simple is better than complex."
+3. Keep consistent naming and style conventions throughout each project
+4. Make sure your code is scalable
+5. Make sure your code is readable
+6. Try not to get intimidated when looking at new code
+7. Don't reinvent the proverbial coding wheel - if code
+8. Comment, Comment, Comment!
+9. Understand that you won't have all the answers - use the Internet!
+10. Practice, practice and practice again
+
+
+=== What if I have questions?
+You will likely have questions while going through this book.
+The resources I listed in the disclaimer are great for any questions you may have.
+In addition, don't be afraid to go to the source's documentation and read it.
+Lastly, Google is your friend.
+If you have a question, chances are somebody else also has.
+I can't tell you how many random error messages I just copied and pasted into Google and found a Stack Overflow thread on it.
+
+Good luck!

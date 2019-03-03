@@ -1,0 +1,684 @@
+== CSS
+=== What is CSS?
+CSS, or Cascading Style Sheets, is what makes websites look good.
+You can think of HTML as the person, and CSS as the clothing.
+CSS adds styling to otherwise boring websites.
+
+[#img-21]
+[.text-center]
+.Google without styles
+image::2_1.png[Google without styles]
+
+Using Chrome's development tools, I very cumbersomely and grotesquely started deleting the CSS files and Javascript files (we will learn more in later chapters).
+What you see on the left side is basically the same HTML, but it does not have many of the CSS and Javascript files.
+You will see the same HTML tags and elements, but the format, layout and style of the website will look much different.
+In Safari, you can easily select to disable the stylesheets, and you can do this yourself.
+
+This chapter will be very visual, like the last one.
+CSS is still part of Front End Development, so changes will be directly visible in the browser.
+Let's get started!
+
+=== Divs, Spans, Ids and Classes
+==== Divs and Spans
+As we said at the end of the last chapter, there were some tags that we did not cover yet.
+Those two tags are `<div>` and `<span>`.
+Both tags are used to separate different content for styling purposes.
+`<div>` is generally used for larger blocks of code, while `<span>` is typically used for short chunks of code (a sentence or less).
+They can work together as the following:
+
+[literal]
+<div>
+    This text is in the div, but outside of the span.
+    <span>This text is inside of the div and the span.</span>
+</div>
+<div>
+    This text is in the second div, but outside of the second span.
+    <span>This text is inside of the second div and the second span.</span>
+</div>
+
+The code results in the following:
+[#img-22]
+[.text-center]
+.Divs and Spans
+image::2_2.png[Divs and Spans]
+
+Notice how the code is shown on the page.
+There is no real styling, but the second div does go to another line, while the spans stay on the same line.
+This is because of the *display* property.
+Each html tag has different properties and corresponding values for those properties in CSS.
+So, display is a CSS property that says how the elements will behave from a layout basis.
+
+A `<div>` has a default display value of `block`.
+This means that it will take up its own line.
+If we have three `<div>` tags, one after another, by default they will take up their own line, and the next `<div>` will go to the next line, as we can see in Figure 13.
+
+`<span>` elements have a default display value of `inline`.
+Inline elements will just flow with the page.
+In the previous example, the `<span>` within the `<div>` stays on the same line as the other content within the `div`.
+
+The display property is very important to keep in mind and can result in a lot of anger when trying to get a layout designed in a web page (not speaking from personal experience, of course).
+Another possible value for display is `inline-block`.
+An `inline-block` element behaves as an `inline` element, but it is more flexible.
+We will see more of this as we go along.
+Another value is `none`.
+A display value of `none` does exactly what it sounds like; it will remove the element from view.
+
+==== IDs and Classes
+Ids and classes are HTML tag attributes that can help add style to an element.
+It allows a programmer to refer to a specific element (often time a div or a span) or group of elements to apply styling to them.
+
+[literal]
+<div class="red-background">
+    <span id="text">My text</span>
+</div>
+
+I can then go into CSS and refer to the `div` called "red-background" and the span called "text".
+Classes are typically used for more than one item, and IDs are used when you are referring to one specific element.
+
+=== CSS Syntax
+All that is great, but what does this mean for me? How do I actually start using classes and ids to style?
+Create a new .html file and type the following:
+
+[literal]
+<html>
+    <head>
+        <style type="text/css">
+        </style>
+    </head>
+    <body>
+        <div class="red-background">
+            <span id="text">My text</span>
+        </div>
+    <body>
+</html>
+
+We have introduced the `<style>` tag.
+This is called "Internal CSS," because it is located inside of the html document.
+We will also learn how to use "External CSS," which keeps all of your styling in another document (which is the most common way to style).
+For the time being while we learn syntax, all of our CSS code can be put in the `<style>` tag.
+
+Let's start styling.
+Within the `style` tag, we can refer to the `div` by class and `span` by id by typing
+
+[literal]
+<style type="text/css">
+    .red-background{
+        background-color: red;
+    }
+    #text{
+        color: white;
+    }
+</style>
+
+Let's walk through this.
+In order to refer to a class in our CSS, we type a `.` then the class name.
+In order to refer to an id, we type a `#` then the id name.
+After we choose our class or id, we create a code block for all of our styles for that class or id, by using curly braces.
+Within these curly braces, we put property, value pairs, separated by a colon, and then finished by a semi-colon.
+We can put as many property, value pairs as we want in each block.
+
+The red-background class has a `background-color` property, for which its value is `red`.
+The text id has a `color: white;` style, which sets the color of the font.
+
+If you save your html file and refresh your browser, you will see the following:
+[#img-23]
+[.text-center]
+.CSS Styling
+image::2_3.png[CSS Styling, 500, auto]
+
+Notice how the red color spans the entire width of the browser.
+This is because the `div` is a block element, and takes up an entire line.
+So, it will fill the entire `div` with a background color of red.
+Try deleting the `background-color` property in the class and put it in the `text` id styling and see what happens.
+
+As we saw, CSS has a specific syntax. Generally speaking, the syntax is
+
+----
+tag-name{
+    property-1: value-1;
+    property-2: value-2;
+    ...
+    property-n: value-n;
+}
+.class-name{
+    property-1: value-1;
+    property-2: value-2;
+    ...
+    property-n: value-n;
+}
+#id-name{
+    property-1: value-1;
+    property-2: value-2;
+    ...
+    property-n: value-n;
+}
+----
+
+Note the first example - you can also add styles to an entire tag, such as a `div` or `span`.
+You can have as many properties as you want and you can name your classes and ids whatever you want, although there are naming conventions that we will cover.
+At this point, you just want it to be very clear what your class does and which element your id refers to.
+
+==== Internal, Inline and External CSS
+A quick aside - CSS can be created in the same file, called internal CSS.
+This uses the `<style>` tag that we previously discussed within the `<head>` of the file.
+
+We can also set the style within the html in the tag using the following syntax:
+
+[literal]
+<div style = "color: red; background-color: black;">
+    This content has a black background with red text.
+</div>
+
+You can put as many properties you want separated by semi-colons.
+
+However, both of these methods are cumbersome.
+The most common way is to use external CSS.
+External CSS is CSS that is stored in another file, and then linked to in the html file.
+Let's say you have a CSS file named `styles.css` in the same folder as your html file.
+You would implement the CSS by using the following syntax:
+
+[literal]
+<link rel = "stylesheet" href = "styles.css" />
+
+The `href` will be the path of your external CSS file.
+External CSS links will typically go in the `<head>` as well.
+
+=== The Box Model
+Every HTML element can be looked at as a box.
+You can think of the text and everything that is closed within the tag as the content.
+The content is the center of the box.
+Outside of the box is called padding.
+Padding is the space between the content and the border of the element.
+If you want the border to be far away from the content, you increase the padding.
+Or, if you want the border to be hugging the content closely, you decrease the padding.
+Then, you hit the border, which is exactly what it sounds like - the border of the element.
+
+The last part of the box is the margin.
+It may be easy to think of the margin as the part right outside of the element.
+It determines how much space is between the HTML element and the next HTML element.
+
+[#img-24]
+[.text-center]
+.Box Model
+image::2_4.png[Box Model, 500, auto]
+
+If you have two `<h1>` elements, and you want them far apart, you can increase the padding.
+However, if you gave them a border, the borders would be close to each other.
+If you gave them a big margin, the borders would not be touching, and would be separated by the margins.
+
+=== Units
+When you are assigning values to properties, it is important to understand the important of units.
+Colors can be created with different methods.
+Depending on your project, you will want to use different units for things such as `font-size` or `height`.
+
+==== Color
+When setting a property that has a color value, there are three main ways to do it:
+
+1. Using HTML's built in color values, such as `black` or `red`.
+2. Using `rgb(r, g, b)`. If you want to give a color value to a property, a common way to do this is by typing the `rgb()` function with corresponding values for the red, green and blue values. For example, white is `rgb(255,255,255)`.
+3. Use `rgba(r, g, b, a)`. If you want to change the opacity of the color (how transparent it is), `rgba()` is used, where a is between 0 and 1, where 0 is transparent, and 1 is completely opaque.
+4. Use hex codes. You can look more into them on the internet, but hex codes are another way to set values for colors. It will start with a number sign followed by an alphanumeric value. For example, white is `#ffffff`.
+
+You would use these the following ways:
+[literal]
+background-color: rgb(0, 0, 0);
+background-color: rgba(0, 0, 0, .5);
+background-color: #aaaaaa;
+
+All of those are the same way to set the background color to black.
+The `rgba` one, however, makes it 50% transparent.
+
+==== Lengths and Sizes
+When something has a length, height or any type of size value, there are a few different ways to set them.
+These are the most common:
+
+.Summary of Lengths and Sizes
+|===
+|Syntax |Explanation |Syntax
+
+|Pixels
+|The number of pixels you want the element to be
+|font-size: 10px;
+
+|em
+|This is a relative length that will give a multiple of the current font size. For example, if the current font size is 10px, `2em` would be 20px.
+|font-size: 3em;
+
+|rem
+|This is widely used in responsive design. The browser has a "Root Font Size" that is defined for the webpage. rem will return a multiple of the root font size. For example, if the root font size is 12px, `2rem` with be 24px.
+|font-size: 1.2rem;
+
+|Percent
+|You can set an property to a size relative to the size of its parent element (that is, the tag that it is inside of). So, `height: 100%` will be the same height as the parent element.
+|height: 100%;
+
+|Viewport
+|You can set a property to have a size relative to the size of the current view, either the width or the height. For example, `90vh` will be 90% if the height of the current visible area of the screen and `90vw` will be 90% of the width of the current visible area of the screen.
+|height: 95vh;
+
+|===
+
+=== Commonly Used Properties
+There are a lot of properties that are used when styling with CSS.
+It is impossible to go through all of them within one book, let alone one chapter.
+So, we will review some of the most common and important ones.
+I highly recommend that you play with these with different values on your own so you can see how each one actually works.
+
+==== Margin, Border, Padding, Height and Width
+Since we are fresh off of the Box Model, we should first focus on how to change that content.
+We will start with the outside (margin), and move inwards.
+
+===== Margin
+As we discussed, margin is the space between each element.
+As with everything in the box model, there are four parts to them: the top, right, bottom, and left.
+Margins can be set for all sides at once, or individually.
+
+[literal]
+1. margin: 2px;
+2. margin-top: 2rem;
+3. margin-right: 3rem;
+4. margin-bottom: 4rem;
+5. margin-left: 5rem;
+6. margin: 2rem 3rem 4rem 5rem;
+7. margin: 2rem 3rem;
+
+The `margin` property can be set at once.
+In the first line above, it sets all margins to 2px around the entire element.
+You can also set the margins specifically using `margin-[side]` to define the margin on each side.
+In line 6, you can see that there are four values provided.
+When four values are provided, it will set the margins clockwise, starting from the top.
+So, lines 2-5 can be combined into one line, line 6.
+Lastly, you can set just the top and bottom and left and right separately.
+In line 7, when margin is given two values, the first value will set the top and bottom, and the second value will set the left and right margins.
+
+===== Border
+
+The border is the "last part" of the element before you exit it.
+As you saw in the Box Model, the border is everything between the margin and the padding.
+There are a lot of properties that customize the border, so lets jump right in.
+
+[literal]
+border-top-width: 3px;
+border-right-width: 4px;
+border-bottom-width: 5px;
+border-left-width: 6px;
+border-width: 3px 4px 5px 6px;
+border-style: dash;
+border-color: red;
+border-radius: 3px;
+border: 1px solid red;
+
+Generally speaking, the syntax for the border is `border-_[border side]_-_specific property_`.
+So, if you wanted to change the width of the border on the bottom, you would access `border-bottom-width`.
+As with margin, there is a shorthand way to set the border.
+The `border` property has three values: the width, style and color.
+So, `border: 1px solid red` will result in a border that is 1px wide, solid and red.
+
+.Summary of Common Border Properties
+|===
+|Attribute |Explanation |Common Possible Values
+
+|`width`
+|Controls the actual width of the border.
+|It can be any value that controls unit size, but is typically px or rem.
+
+|`color`
+|Controls the color of the border.
+|Any type of color value.
+
+|`style`
+|The style of the border.
+|`solid`, `dash`, `dotted`
+
+|`radius`
+|This will add a radius to the corners of the border to make rounded corners.
+|Typically in pixels or rem.
+|===
+
+===== Padding
+Padding is the space between the content and the border.
+Setting the padding is analogous to margin, so we will not spend too much time on it.
+It is more important to visualize it.
+
+[literal]
+padding: 2px;
+padding-top: 2rem;
+padding-right: 3rem;
+padding-bottom: 4rem;
+padding-left: 5rem;
+padding: 2rem 3rem 4rem 5rem;
+padding: 2rem 3rem;
+
+===== Height and Width
+We can also set the height and width of an element.
+We can do this using `px` or `rem` like this:
+
+----
+height: 100px;
+width:3rem;
+----
+
+This is a way to fix the height and width.
+Or, we can use the `%`.
+This will create a value that is relative to its parent element.
+So, `height:100%` will take up the height of the entire parent element.
+
+==== Display
+We went over display earlier, but let's look into it a little big more in depth.
+The three main values you should worry about now are `block`, `inline`, and `inline-block`.
+A block element will take up an entire row, and an inline element will just take up its own width.
+You can set the value of the property in one of the following ways:
+
+[literal]
+display: inline;
+display: block;
+display: inline-block;
+
+These are not the only values, but for the time being, they are the main ones we will deal with.
+As always, feel free to look up all of the other values and change the property values to experiment and see what happens.
+
+Let's say we have the following html code
+
+[literal]
+<div class = "practice">
+    This is just some practice text
+</div>
+
+Then, we add styling:
+
+----
+.practice{
+    display: inline;
+    height: 50px;
+    background-color: black;
+    color: white;
+}
+----
+
+We will get an inline element with a black background and white text.
+However, if we were to set `display:block`, we would have a much different look.
+Height will not affect this element because inline elements only take up the size of the content.
+This is visualized below.
+
+[#img-25]
+[.text-center]
+.Display
+image::2_5.png[Display, 500, auto]
+
+`display` is set to `inline` on the left side and `block` on the right side.
+The background color goes the length of the page and is 50px tall when it is block.
+When it is inline, it only is the height of the content.
+
+What if you wanted an element to behave like an inline element, but be able to change the height?
+That is where `inline-block` comes in.
+Using the same CSS, but changing it to `display: inline-block;` will achieve this.
+
+[#img-26]
+[.text-center]
+.display: inline-block
+image::2_6.png[display: inline-block, 500, auto]
+
+Now, it only takes up the width of the content, but now we can change the height property.
+
+Lastly, you can change the CSS to `display:none`, and you will not see the content.
+
+===== `top`, `right`, `bottom` and `left`
+These value of these properties will depend on the `position` value.
+However, in general, the way these properties work is by putting a gap of the value you choose the property.
+For example, `top: 5rem` will shift the element down by `5rem` because you are putting a gap of `5rem` above the element.
+
+==== Position
+The `position` property helps determine where on the page an element is.
+Along with `top`, `right`, `bottom` and `left`, you can put an element wherever you want on a page.
+We will review these possible values, but it does not have nearly as much meaning until we learn other properties such as `top` and `left`.
+
+.Summary of Common Position Values
+|===
+|Value |Explanation |`top`, `bottom`, `left` and `right`
+
+|`static`
+|By default, elements will have a default property value of `static`. An element with `position: static` will just be positioned relative to the normal flow of the webpage.
+|These will have no effect on `static` elements
+
+|`fixed`
+|Next, we can look at the `position: fixed` value. Wherever you end up putting an element, the element will be at the same position on the screen regardless of where you scroll.
+|These will position the element relative to the viewport. `top: 95%;` for example, will position the element 95% from the top of the viewport.
+
+|`relative`
+|This will have a position that is relative to its original position.
+|These will move the element relative to its normal position on the page. A value of `left: 5rem` will put a gap of 5rem to the left of the element.
+
+|`absolute`
+|This will have a position that will adjust itself relative to the nearest parent element.
+|These elements will be positioned relative to the nearest parent element.
+
+|===
+
+Let's look at what these `position` values look like in a webpage.
+
+[literal]
+<html>
+    <head>
+        <title>My Webpage</title>
+        <style type="text/css">
+            div{
+                border: 3px solid black;
+                height: 5rem;
+            }
+            .div-static{
+                position: static;
+                top: 3rem;
+            }
+            .div-relative{
+                position: relative;
+                top: 3rem;
+            }
+            .div-absolute{
+                position: absolute;
+                top: 1rem;
+            }
+            .div-fixed{
+                position: absolute;
+                top: 80%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="div-static">
+            This content is static.
+        </div>
+        <div class = "div-relative">
+                This is content relative.
+            <div class="div-absolute">
+                This is content absolute.
+            </div>
+        </div>
+        <div class = "div-fixed">
+            This content is fixed.
+        </div>
+    </body>
+</html>
+
+The code results in the following:
+
+[#img-27]
+[.text-center]
+.Positioning
+image::2_7.png[Positioning, 500, auto]
+
+The static content is first and is just in the normal flow of the page.
+The top value has no effect on it.
+
+The relative content is relative to its normal position.
+It should have come right after the static content.
+However, there is now a gap of `3rem`, which shifts the content down `3rem`.
+
+The absolute content will shift relative to the nearest `position: relative` parent.
+So, it is shifted down `3rem` relative to the top of the `div-relative`.
+You can confirm the relative and absolute behavior by looking at the gap between the bottom of the static content and the top of the relative content, then the top of the relative content to the top of the absolute content.
+The lengths are both `3rem`.
+
+Finally, the fixed content is fixed at `95%` of the viewport.
+It will always stay there and has a gap of `95%` of the viewport height above it.
+
+==== Float
+The `float` property is a great way to position content.
+It specifics where to place the content within its container.
+It takes the values `left`, `right`, `inherit` and `none`.
+
+Generally speaking, you should always use `position: relative` when using float, because it is a property that will position something relative to the parent.
+Let's say we have the following html:
+
+[literal]
+<div class="parent">
+    <div class="right-content">
+        Right Content
+    </div>
+    <div class="left-content">
+        Left Content
+    </div>
+</div>
+
+Normally, you would see the right content come before the left content.
+However, let's add the following CSS:
+
+----
+.right-content{
+    float: right;
+}
+.left-content{
+    float: left;
+}
+----
+
+Now, the right content will go to the right and the left content will go to the left.
+
+[#img-210]
+[.text-center]
+.The left browser does not have the float properties set, the right one has them set with the preceding code
+image::2_10.png[Float, 500, auto]
+
+==== Fonts
+There are a few ways to adjust the font of a page.
+Let's first focus on `font-size`.
+We can use any of the units to define this.
+
+----
+font-size:1rem;
+----
+or
+----
+font-size:10px;
+----
+These will change the size of the font to `1rem` or `10px` respectively.
+
+We can also change the actual font of the element, using `font-family`.
+https://fonts.google.com/[Google Fonts] is great for this, and will actually walk you through how to use it.
+For example, go to Google Fonts.
+Search for the "Roboto" font.
+Click on the "+".
+
+This will give you what you need to define in your webpage.
+First, you will need a stylesheet, which is provided in Google Fonts.
+
+----
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+----
+
+This is the stylesheet for the "Roboto" font.
+You can put this in the `<head>` along with the rest of your stylesheets.
+Then, you can copy and paste the `font-family` property from Google Fonts.
+
+----
+font-family: 'Roboto', sans-serif;
+----
+
+Now, we are good to go.
+This specifies the font that will be used for the element.
+
+==== Color
+When you want to change the color of an element, you can change the background color or the font color.
+You can use two different properties to change the color of these parts of an html element.
+
+First, you can change the background color of the element.
+In order to do that, you use (guess what!) the `background-color` property.
+
+[literal]
+background-color: rgb(154, 234, 122);
+
+The `background-color` property will change the background of the element up to the borders - that means the content itself and the padding.
+
+You can also change the color of the font using the `color` property.
+
+For example, the following code will create a class with white text and black background.
+
+----
+.black-white{
+    background-color: black;
+    color: white;
+}
+----
+
+Remember: `color` will change the color of the content and `background-color` will change the background color.
+
+==== Text Align
+Most of the time, you want to be able to align your content in a certain way.
+This is where the `text-align` property comes into play.
+
+`text-align` helps do exactly what is sounds like.
+It will help align text within an element.
+
+Let's say we have the following html code:
+
+[literal]
+<div class="text-align">
+    Center Text
+</div>
+
+And let's say class `text-align` has the following CSS.
+
+----
+.text-align{
+    border: 2px solid black;
+    display: block;
+    text-align: center;
+}
+----
+
+We know that the element will span the entire width of the browser because of `display: block;`.
+The content "Center Text" will be in the center of element which will be in the center of the browser.
+
+What happens when we change display to inline?
+It will only take up the room of its content, so it will stay on the left side of the browser.
+The following figure shows what happens to the `div` with `class="text-align"` with `display: block` on the left and `display: inline` on the right.
+
+[#img-28]
+[.text-center]
+.`text-align`
+image::2_8.png[`text-align`, 500, auto]
+
+However, if we changed the padding of the inline element, the content would be centered within the padding, per the box model.
+Let's change the CSS:
+
+----
+.text-align{
+    border: 2px solid black;
+    display:inline;
+    text-align:center;
+    top: 3rem;
+    position: relative;
+    padding: 2rem;
+}
+----
+
+We added the `position` and `top` properties just so you could see the top border clearly in the browser.
+Now, we get the following:
+
+[#img-29]
+[.text-center]
+.Inline with padding
+image::2_9.png[Inline with padding, 500, auto]
+
+`text-align` can also have values of `left`, `right` and `justify`.
+
+TIP: It is common to set `text-align: center` for parent elements so that all of the elements within are centered.
