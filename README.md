@@ -30,3 +30,5 @@ I would also like to know if people think Javascript would be useful to include 
 
 My next book if going to be on using React with Django (DRF).
 If you think that there is a better subject, please let me know, www.codexplore.io/contact.
+
+To read on our website, go to www.codexplore.io/books/crash-course

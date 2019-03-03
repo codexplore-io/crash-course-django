@@ -19,6 +19,18 @@ include::chapter02.adoc[]
 include::chapter04.adoc[]
 
 <<<
+include::chapter05.adoc[]
+
+<<<
+include::chapter06.adoc[]
+
+<<<
+include::chapter07.adoc[]
+
+<<<
+include::chapter08.adoc[]
+
+<<<
 include::chapter09.adoc[]
 
 <<<
